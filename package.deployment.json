@@ -1,0 +1,23 @@
+{
+  "name": "architecture-studio-website",
+  "version": "1.0.0",
+  "description": "Professional architecture studio website with modern design and interactive features",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "build:static": "next build && next export",
+    "start": "next start -p 3001",
+    "lint": "next lint",
+    "export": "next export"
+  },
+  "keywords": [
+    "architecture",
+    "design",
+    "nextjs",
+    "react",
+    "typescript",
+    "website"
+  ],
+  "author": "Architecture Studio",
+  "license": "Private"
+}

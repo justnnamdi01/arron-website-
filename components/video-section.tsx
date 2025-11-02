@@ -1,0 +1,287 @@
+"use client"
+
+import { useEffect, useRef, useState } from "react"
+
+export function VideoSection() {
+  const [isVisible, setIsVisible] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+  const [videoVisibility, setVideoVisibility] = useState([false, false, false])
+  const [fullscreenVideo, setFullscreenVideo] = useState<string | null>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const videoRefs = useRef<(HTMLDivElement | null)[]>([null, null, null])
+
+  useEffect(() => {
+    setIsMounted(true)
+
+    const sectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          console.log('Video section is now visible!')
+        } else {
+          // Reset animation when leaving viewport
+          setIsVisible(false)
+          setVideoVisibility([false, false, false])
+        }
+      },
+      { 
+        threshold: 0.3, // Trigger when 30% of section is visible
+        rootMargin: '-50px 0px' // Add some margin for better timing
+      }
+    )
+
+    const videoObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.getAttribute('data-video-index') || '0')
+            setVideoVisibility(prev => {
+              const newVisibility = [...prev]
+              newVisibility[index] = true
+              return newVisibility
+            })
+          }
+        })
+      },
+      {
+        threshold: 0.5,
+        rootMargin: '-20px 0px'
+      }
+    )
+
+    if (sectionRef.current) {
+      sectionObserver.observe(sectionRef.current)
+    }
+
+    // Observe individual video containers
+    videoRefs.current.forEach((ref) => {
+      if (ref) {
+        videoObserver.observe(ref)
+      }
+    })
+
+    return () => {
+      sectionObserver.disconnect()
+      videoObserver.disconnect()
+    }
+  }, [])
+
+  return (
+          <section 
+        id="video-showcase"
+        ref={sectionRef}
+        className="h-screen w-full bg-white relative overflow-hidden"
+      >
+      {/* Transparent dark overlay for contrast */}
+      <div className="absolute inset-0 bg-black/40 pointer-events-none z-[1]"></div>
+      {/* Video Grid Container - Mobile responsive */}
+      <div className="h-full w-full grid grid-rows-2 md:grid-rows-2 gap-0 relative z-[2]">
+        
+        {/* Top Row - Responsive layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 relative">
+          
+          {/* Video 1 - Top Left/Mobile Top */}
+          <div 
+            ref={(el) => { videoRefs.current[0] = el }}
+            data-video-index="0"
+            className={`relative overflow-hidden group transition-all duration-1000 ease-out ${
+              videoVisibility[0] 
+                ? 'opacity-100 transform translate-x-0 translate-y-0 scale-100' 
+                : 'opacity-0 transform -translate-x-20 -translate-y-10 scale-95'
+            }`}
+            onClick={() => setFullscreenVideo('/video/Clip 3.mp4')}
+          >
+            <video
+              className={`w-full h-full object-cover transition-all duration-1000 ease-out ${
+                (isVisible || isMounted) ? 'scale-100 opacity-100' : 'scale-125 opacity-0'
+              } group-hover:scale-105`}
+              autoPlay
+              loop
+              muted
+              playsInline
+            >
+              <source src="/video/Clip 3.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            
+            {/* Overlay for hover effect */}
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Text overlay with enhanced scroll reveal - responsive */}
+            <div className={`absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white transition-all duration-1000 ease-out delay-300 ${
+              isVisible ? 'opacity-100 transform translate-y-0 translate-x-0' : 'opacity-0 transform translate-y-12 translate-x-8'
+            }`}>
+              <h3 className="text-sm sm:text-lg font-light tracking-wide">DESIGN PROCESS</h3>
+            </div>
+          </div>
+
+          {/* Vertical Separator - hidden on mobile */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/20 z-10 transform -translate-x-px hidden sm:block"></div>
+
+          {/* Video 2 - Top Right/Hidden on mobile */}
+          <div 
+            ref={(el) => { videoRefs.current[1] = el }}
+            data-video-index="1"
+            className={`relative overflow-hidden group hidden sm:block transition-all duration-1000 ease-out delay-200 ${
+              videoVisibility[1] 
+                ? 'opacity-100 transform translate-x-0 translate-y-0 scale-100' 
+                : 'opacity-0 transform translate-x-20 -translate-y-10 scale-95'
+            }`}
+            onClick={() => setFullscreenVideo('/video/Clip 4.mp4')}
+          >
+            <video
+              className={`w-full h-full object-cover transition-all duration-1000 ease-out delay-200 ${
+                (isVisible || isMounted) ? 'scale-100 opacity-100' : 'scale-125 opacity-0'
+              } group-hover:scale-105`}
+              autoPlay
+              loop
+              muted
+              playsInline
+            >
+              <source src="/video/Clip 4.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            
+            {/* Overlay for hover effect */}
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Text overlay with enhanced scroll reveal */}
+            <div className={`absolute bottom-6 left-6 text-white transition-all duration-1000 ease-out delay-500 ${
+              isVisible ? 'opacity-100 transform translate-y-0 translate-x-0' : 'opacity-0 transform translate-y-12 translate-x-8'
+            }`}>
+              <h3 className="text-lg font-light tracking-wide">CONSTRUCTION</h3>
+            </div>
+          </div>
+        </div>
+
+        {/* Horizontal Separator */}
+        <div className="absolute left-0 right-0 top-1/2 h-px bg-white/20 z-10 transform -translate-y-px"></div>
+
+        {/* Bottom Row - One Rectangular Video */}
+        <div 
+          ref={(el) => { videoRefs.current[2] = el }}
+          data-video-index="2"
+          className={`relative overflow-hidden group transition-all duration-1000 ease-out delay-400 ${
+            videoVisibility[2] 
+              ? 'opacity-100 transform translate-x-0 translate-y-0 scale-100' 
+              : 'opacity-0 transform translate-y-20 scale-95'
+          }`}
+          onClick={() => setFullscreenVideo('/video/Clip 5.mp4')}
+        >
+          <video
+            className={`w-full h-full object-cover transition-all duration-1000 ease-out delay-400 ${
+              (isVisible || isMounted) ? 'scale-100 opacity-100' : 'scale-125 opacity-0'
+            } group-hover:scale-105`}
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source src="/video/Clip 5.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          
+          {/* Overlay for hover effect */}
+          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          {/* Text overlay with enhanced scroll reveal - responsive */}
+          <div className={`absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white transition-all duration-1000 ease-out delay-700 ${
+            isVisible ? 'opacity-100 transform translate-y-0 translate-x-0' : 'opacity-0 transform translate-y-12 translate-x-8'
+          }`}>
+            <h3 className="text-sm sm:text-lg font-light tracking-wide">FINAL RESULT</h3>
+          </div>
+
+          {/* Central Text Overlay with dramatic scroll reveal - responsive */}
+          <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1500 ease-out delay-800 ${
+            isVisible ? 'opacity-100 transform translate-y-0 scale-100' : 'opacity-0 transform translate-y-20 scale-95'
+          }`}>
+            <div className="text-center text-white px-4 sm:px-8">
+              <div className={`w-12 sm:w-16 h-px bg-white mx-auto mb-4 sm:mb-6 transition-all duration-1000 delay-1000 ${
+                isVisible ? 'opacity-100 transform scale-x-100' : 'opacity-0 transform scale-x-0'
+              }`}></div>
+              <h2 className={`text-2xl sm:text-3xl md:text-5xl font-light tracking-wider mb-3 sm:mb-4 transition-all duration-1200 ease-out delay-1100 ${
+                isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-16'
+              }`}>
+                ENOU PORTFOLIO FILMS
+              </h2>
+              <p className={`text-sm sm:text-lg md:text-xl font-light opacity-90 max-w-2xl transition-all duration-1000 ease-out delay-1300 ${
+                isVisible ? 'opacity-90 transform translate-y-0' : 'opacity-0 transform translate-y-12'
+              }`}>
+                Short films capturing built works, design intent, and the spaces that define our practice.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Corner Decorative Elements with enhanced animations - responsive */}
+      <div className={`absolute top-4 left-4 sm:top-8 sm:left-8 w-6 h-6 sm:w-8 sm:h-8 border-l-2 border-t-2 border-white/30 transition-all duration-1200 ease-out delay-200 ${
+        isVisible ? 'opacity-100 transform scale-100 rotate-0' : 'opacity-0 transform scale-75 rotate-45'
+      }`}></div>
+      
+      <div className={`absolute top-4 right-4 sm:top-8 sm:right-8 w-6 h-6 sm:w-8 sm:h-8 border-r-2 border-t-2 border-white/30 transition-all duration-1200 ease-out delay-300 ${
+        isVisible ? 'opacity-100 transform scale-100 rotate-0' : 'opacity-0 transform scale-75 rotate-45'
+      }`}></div>
+      
+      <div className={`absolute bottom-4 left-4 sm:bottom-8 sm:left-8 w-6 h-6 sm:w-8 sm:h-8 border-l-2 border-b-2 border-white/30 transition-all duration-1200 ease-out delay-400 ${
+        isVisible ? 'opacity-100 transform scale-100 rotate-0' : 'opacity-0 transform scale-75 rotate-45'
+      }`}></div>
+      
+      <div className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 w-6 h-6 sm:w-8 sm:h-8 border-r-2 border-b-2 border-white/30 transition-all duration-1200 ease-out delay-500 ${
+        isVisible ? 'opacity-100 transform scale-100 rotate-0' : 'opacity-0 transform scale-75 rotate-45'
+      }`}></div>
+
+      {/* Navigation Dots with staggered animation - responsive */}
+      <div className={`absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 transition-all duration-1000 ease-out delay-1400 ${
+        isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-8'
+      }`}>
+        <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white/60 rounded-full transition-all duration-800 delay-1500 ${
+          isVisible ? 'transform scale-100' : 'transform scale-0'
+        }`}></div>
+        <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full transition-all duration-800 delay-1600 ${
+          isVisible ? 'transform scale-100' : 'transform scale-0'
+        }`}></div>
+        <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white/60 rounded-full transition-all duration-800 delay-1700 ${
+          isVisible ? 'transform scale-100' : 'transform scale-0'
+        }`}></div>
+      </div>
+
+      {/* Fullscreen Video Modal */}
+      {fullscreenVideo && (
+        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center">
+          <div className="relative w-full h-full flex items-center justify-center p-4">
+            
+            {/* Close Button */}
+            <button
+              onClick={() => setFullscreenVideo(null)}
+              className="absolute top-4 right-4 z-10 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Fullscreen Video */}
+            <video
+              className="max-w-full max-h-full object-contain"
+              autoPlay
+              loop
+              muted
+              playsInline
+              controls
+            >
+              <source src={fullscreenVideo} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+
+            {/* Click outside to close */}
+            <div 
+              className="absolute inset-0 -z-10"
+              onClick={() => setFullscreenVideo(null)}
+            />
+          </div>
+        </div>
+      )}
+    </section>
+  )
+}

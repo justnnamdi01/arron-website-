@@ -1,4 +1,4 @@
-import { ParallaxSection } from "@/components/parallax-section"
+import { ParallaxSectionGSAP } from "@/components/parallax-section-gsap"
 import { Header } from "@/components/header"
 import { HeroVideo } from "@/components/hero-video"
 import { ProjectSlideshow } from "@/components/project-slideshow"
@@ -22,8 +22,8 @@ export default function Home() {
       {/* Hero Video Section */}
       <HeroVideo />
       
-      {/* Parallax Section with Architectural Planning */}
-      <ParallaxSection />
+      {/* Parallax Section with Architectural Planning - GSAP Enhanced */}
+      <ParallaxSectionGSAP />
       
       {/* Architecture Studio Video Section */}
       <ArchitectureStudioVideo />

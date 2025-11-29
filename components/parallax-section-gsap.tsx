@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { Button } from "@/components/ui/button"
+import { useEffect, useRef } from "react"
+import Image from "next/image"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
@@ -10,359 +10,290 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-export function ParallaxSectionGSAP() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const titleRef = useRef<HTMLHeadingElement>(null)
-  const subtitleRef = useRef<HTMLHeadingElement>(null)
-  const descriptionRef = useRef<HTMLParagraphElement>(null)
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const image1Ref = useRef<HTMLDivElement>(null)
-  const image2Ref = useRef<HTMLDivElement>(null)
-  const image3Ref = useRef<HTMLDivElement>(null)
-  const floatingElementsRef = useRef<HTMLDivElement>(null)
-  const gridLinesRef = useRef<HTMLDivElement>(null)
-  
-  const [currentSection, setCurrentSection] = useState(0)
-  const [textContent, setTextContent] = useState({
-    title: "ARCHITECTURAL\nPLANNING",
-    subtitle: "Master Planning & Site Design",
-    description:
-      "From concept to completion, we create comprehensive architectural plans that transform your vision into detailed blueprints for extraordinary living spaces.",
-  })
+// Portfolio projects data
+const portfolioProjects = [
+  {
+    id: 1,
+    title: "KOTO Villa",
+    category: "Residential Architecture",
+    image: "/project pages/KOTO/1.jpg",
+    description: "Modern luxury villa with contemporary design elements",
+  },
+  {
+    id: 2,
+    title: "DÔTÛ Villa",
+    category: "Modern Living",
+    image: "/project pages/DÔTÛ VILLA/Image.png",
+    description: "Sophisticated residential design with elegant interiors",
+  },
+  {
+    id: 3,
+    title: "LA CASA",
+    category: "Contemporary Design",
+    image: "/project pages/LA CASA/S_1 - Photo.png",
+    description: "Stunning architectural masterpiece",
+  },
+  {
+    id: 4,
+    title: "JORDAN Villa",
+    category: "Luxury Residence",
+    image: "/project pages/JORDAN VILLA/1.1.jpg",
+    description: "Premium villa with exceptional detailing",
+  },
+  {
+    id: 5,
+    title: "MINI LUX",
+    category: "Compact Luxury",
+    image: "/project pages/MINI LUX/1.jpg",
+    description: "Efficient luxury in compact spaces",
+  },
+  {
+    id: 6,
+    title: "THE GROOVE",
+    category: "Modern Architecture",
+    image: "/project pages/THE GROOVE/1_1 - Photo.jpg",
+    description: "Innovative design with rhythm and flow",
+  },
+  {
+    id: 7,
+    title: "Green Cross Apartments",
+    category: "Multi-Unit Residential",
+    image: "/project pages/GREEN CROSS APARTMENTS/1.jpg",
+    description: "Sustainable apartment complex",
+  },
+  {
+    id: 8,
+    title: "Interior Design",
+    category: "Luxury Interiors",
+    image: "/project pages/Interior design/1.jpg",
+    description: "Bespoke interior design solutions",
+  },
+]
 
-  const sections = [
-    {
-      title: "ARCHITECTURAL\nPLANNING",
-      subtitle: "Master Planning & Site Design",
-      description:
-        "From concept to completion, we create comprehensive architectural plans that transform your vision into detailed blueprints for extraordinary living spaces.",
-    },
-    {
-      title: "MODERN\nARCHITECTURE",
-      subtitle: "Contemporary Design Excellence",
-      description:
-        "Our modern architectural designs blend innovative aesthetics with functional living, creating homes that are both beautiful and perfectly suited to your lifestyle.",
-    },
-    {
-      title: "INTERIOR\nDESIGN",
-      subtitle: "Luxury Living Spaces",
-      description:
-        "Complete interior design solutions that complement our architectural vision, creating cohesive and sophisticated living environments that inspire daily life.",
-    },
-  ]
+export function ParallaxSectionGSAP() {
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const subtitleRef = useRef<HTMLParagraphElement>(null)
+  const projectRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
-    if (!containerRef.current) return
+    if (!sectionRef.current) return
 
     const ctx = gsap.context(() => {
-      // Create a timeline for the entire section
-      const tl = gsap.timeline({
+      // Animate section title on scroll
+      gsap.from(titleRef.current, {
         scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1,
-          pin: ".sticky-content",
-          onUpdate: (self) => {
-            const progress = self.progress
-            const section = Math.floor(progress * 3)
-            
-            if (section !== currentSection && section < 3) {
-              setCurrentSection(section)
-              animateTextChange(section)
-            }
-          },
-        },
-      })
-
-      // Image 1 animations
-      tl.to(image1Ref.current, {
-        opacity: 1,
-        scale: 1.1,
-        y: 20,
-        duration: 0.33,
-      })
-      .to(image1Ref.current, {
-        opacity: 0,
-        scale: 1.2,
-        y: 40,
-        duration: 0.17,
-      })
-
-      // Image 2 animations
-      tl.to(
-        image2Ref.current,
-        {
-          opacity: 1,
-          scale: 1.1,
-          y: 30,
-          duration: 0.17,
-        },
-        0.33
-      )
-      .to(image2Ref.current, {
-        opacity: 1,
-        scale: 1.15,
-        y: 50,
-        duration: 0.33,
-      })
-      .to(image2Ref.current, {
-        opacity: 0,
-        scale: 1.2,
-        y: 70,
-        duration: 0.17,
-      })
-
-      // Image 3 animations
-      tl.to(
-        image3Ref.current,
-        {
-          opacity: 1,
-          scale: 1.1,
-          y: 40,
-          duration: 0.17,
-        },
-        0.66
-      )
-      .to(image3Ref.current, {
-        opacity: 1,
-        scale: 1.2,
-        y: 80,
-        duration: 0.34,
-      })
-
-      // Floating elements animation
-      gsap.to(floatingElementsRef.current, {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom bottom",
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "top 30%",
           scrub: 1,
         },
         y: 100,
-        rotation: 45,
-        opacity: 0.5,
+        opacity: 0,
+        ease: "power3.out",
       })
 
-      // Grid lines animation
-      gsap.to(gridLinesRef.current, {
+      // Animate subtitle
+      gsap.from(subtitleRef.current, {
         scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom bottom",
+          trigger: sectionRef.current,
+          start: "top 75%",
+          end: "top 30%",
           scrub: 1,
         },
-        y: 120,
-        opacity: 0.3,
+        y: 80,
+        opacity: 0,
+        ease: "power3.out",
       })
 
-      // Animate text elements on scroll
-      gsap.to(titleRef.current, {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1,
-        },
-        y: 30,
-      })
+      // Animate each project card - slide in from different directions
+      projectRefs.current.forEach((card, index) => {
+        if (!card) return
 
-    }, containerRef)
+        const isEven = index % 2 === 0
+        const delay = index * 0.1
+
+        // Set initial state
+        gsap.set(card, {
+          x: isEven ? -200 : 200,
+          y: 100,
+          opacity: 0,
+          scale: 0.8,
+          rotationY: isEven ? -15 : 15,
+        })
+
+        // Animate on scroll into view
+        gsap.to(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            end: "top 40%",
+            scrub: 1.5,
+            toggleActions: "play none none reverse",
+          },
+          x: 0,
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          rotationY: 0,
+          ease: "power3.out",
+          delay: delay,
+        })
+
+        // Parallax effect on scroll
+        gsap.to(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 2,
+          },
+          y: -50,
+          ease: "none",
+        })
+      })
+    }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
-  const animateTextChange = (section: number) => {
-    const newContent = sections[section]
-    
-    // Animate out current text
-    const tl = gsap.timeline()
-    
-    tl.to([titleRef.current, subtitleRef.current, descriptionRef.current], {
-      opacity: 0,
-      y: -20,
-      duration: 0.3,
-      stagger: 0.05,
-      ease: "power2.in",
-      onComplete: () => {
-        setTextContent(newContent)
-      },
-    })
-    .to([titleRef.current, subtitleRef.current, descriptionRef.current], {
-      opacity: 1,
-      y: 0,
-      duration: 0.4,
-      stagger: 0.05,
-      ease: "power2.out",
-    })
+  const handleProjectClick = (projectId: number) => {
+    // Navigate to project detail or open modal
+    console.log(`Opening project ${projectId}`)
+    // You can add navigation logic here
   }
 
-  // Auto-progression
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSection((prev) => {
-        const next = (prev + 1) % 3
-        animateTextChange(next)
-        return next
-      })
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [])
-
   return (
-    <div ref={containerRef} className="relative min-h-[300vh]">
-      <div className="sticky-content sticky top-0 h-screen overflow-hidden">
-        {/* Auto-progression indicator */}
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-30 flex space-x-2">
-          {[0, 1, 2].map((index) => (
+    <section
+      ref={sectionRef}
+      className="relative py-20 lg:py-32 bg-gradient-to-b from-stone-50 via-stone-100 to-stone-50 overflow-hidden"
+    >
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 left-10 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-stone-900/5 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <div className="text-center mb-16 lg:mb-24">
+          <div className="inline-block mb-4">
+            <div className="w-16 h-px bg-stone-900 mx-auto mb-4"></div>
+          </div>
+          <h2
+            ref={titleRef}
+            className="text-4xl lg:text-6xl xl:text-7xl font-light tracking-wider text-stone-900 mb-6"
+          >
+            OUR PORTFOLIO
+          </h2>
+          <p
+            ref={subtitleRef}
+            className="text-lg lg:text-xl text-stone-600 font-light max-w-2xl mx-auto"
+          >
+            Explore our collection of exceptional architectural projects
+          </p>
+        </div>
+
+        {/* Portfolio Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+          {portfolioProjects.map((project, index) => (
             <div
-              key={index}
-              className={`w-3 h-3 rounded-full transition-all duration-500 ${
-                currentSection === index
-                  ? 'bg-amber-500 scale-125'
-                  : 'bg-white/50 hover:bg-white/70 cursor-pointer'
-              }`}
-              onClick={() => {
-                setCurrentSection(index)
-                animateTextChange(index)
+              key={project.id}
+              ref={(el) => {
+                projectRefs.current[index] = el
               }}
-            />
+              onClick={() => handleProjectClick(project.id)}
+              className="group relative cursor-pointer will-change-transform"
+              style={{ perspective: "1000px" }}
+            >
+              {/* Project Card */}
+              <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-stone-200 shadow-lg transition-all duration-500 group-hover:shadow-2xl">
+                {/* Image Container */}
+                <div className="absolute inset-0 overflow-hidden">
+                  <div className="relative w-full h-full transition-transform duration-700 ease-out group-hover:scale-110">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover"
+                      quality={85}
+                    />
+                  </div>
+                  
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/40 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"></div>
+                </div>
+
+                {/* Content Overlay */}
+                <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                  {/* Category Badge */}
+                  <div className="mb-3 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                    <span className="inline-block px-3 py-1 text-xs font-light tracking-wider text-white bg-amber-500/80 backdrop-blur-sm rounded-full">
+                      {project.category}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-2xl lg:text-3xl font-light text-white mb-2 tracking-wide transform transition-all duration-500 group-hover:translate-y-0 translate-y-4">
+                    {project.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-white/80 font-light transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-150">
+                    {project.description}
+                  </p>
+
+                  {/* View More Button */}
+                  <div className="mt-4 transform translate-y-6 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-200">
+                    <div className="inline-flex items-center text-white text-sm font-light tracking-wider">
+                      VIEW PROJECT
+                      <svg
+                        className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform duration-300"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Animated Border */}
+                <div className="absolute inset-0 border-2 border-white/0 group-hover:border-white/20 rounded-lg transition-all duration-500"></div>
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Constant header overlay */}
-        <div className="absolute top-0 left-0 right-0 z-20">
-          <div className="px-6 lg:px-16 pt-8">
-            <div className="max-w-3xl">
-              <div className="w-16 h-px bg-stone-900/80 mb-4"></div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light tracking-wider text-stone-900/95">
-                What we Offer at ENOU
-              </h2>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex h-full">
-          {/* Left side - Dynamic text content */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center bg-stone-50 relative z-10">
-            <div className="max-w-lg px-8 lg:px-16">
-              <div className="mb-8">
-                <div className="w-16 h-px bg-stone-900 mb-6"></div>
-                <h1
-                  ref={titleRef}
-                  className="text-4xl lg:text-6xl font-light tracking-wider text-stone-900 mb-6 leading-tight"
-                >
-                  {textContent.title.split("\n").map((line, index) => (
-                    <span key={index}>
-                      {line}
-                      {index === 0 && <br />}
-                    </span>
-                  ))}
-                </h1>
-                <h2 
-                  ref={subtitleRef}
-                  className="text-xl lg:text-2xl font-light text-stone-600 mb-6 tracking-wide"
-                >
-                  {textContent.subtitle}
-                </h2>
-                <p 
-                  ref={descriptionRef}
-                  className="text-lg text-stone-600 font-light leading-relaxed mb-8"
-                >
-                  {textContent.description}
-                </p>
-                <Button 
-                  ref={buttonRef}
-                  className="bg-stone-900 hover:bg-stone-800 text-white font-light tracking-wide px-8 py-3 transition-all duration-300"
-                >
-                  EXPLORE WORK
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          {/* Right side - Sequential background images */}
-          <div className="hidden lg:block lg:w-1/2 relative overflow-hidden">
-            {/* Image 1 - Site Planning */}
-            <div
-              ref={image1Ref}
-              className="absolute inset-0"
-              style={{
-                opacity: 0,
-                backgroundImage: `url('/Project 1/p1.png')`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            />
-
-            {/* Image 2 - Modern Architecture */}
-            <div
-              ref={image2Ref}
-              className="absolute inset-0"
-              style={{
-                opacity: 0,
-                backgroundImage: `url('/Project 1/p2.png.png')`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            />
-
-            {/* Image 3 - Interior Design */}
-            <div
-              ref={image3Ref}
-              className="absolute inset-0"
-              style={{
-                opacity: 0,
-                backgroundImage: `url('/Project 1/p3.png.png')`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            />
-
-            {/* Dynamic floating elements */}
-            <div
-              ref={floatingElementsRef}
-              className="absolute inset-0 pointer-events-none"
+        {/* View All Projects Button */}
+        <div className="text-center mt-16 lg:mt-24">
+          <button className="group relative inline-flex items-center px-8 py-4 bg-stone-900 text-white font-light tracking-wider text-sm overflow-hidden transition-all duration-500 hover:bg-amber-500 hover:shadow-xl">
+            <span className="relative z-10">VIEW ALL PROJECTS</span>
+            <svg
+              className="w-5 h-5 ml-3 transform group-hover:translate-x-2 transition-transform duration-300 relative z-10"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <div className="absolute top-1/4 right-1/4 w-24 h-24 bg-white/20 backdrop-blur-sm rotate-45"></div>
-              <div className="absolute top-3/4 right-1/3 w-16 h-16 bg-white/25 backdrop-blur-sm rounded-full"></div>
-            </div>
-
-            {/* Architectural grid lines */}
-            <div
-              ref={gridLinesRef}
-              className="absolute inset-0 pointer-events-none"
-            >
-              <div className="absolute top-1/3 right-1/2 w-1 h-32 bg-white/30"></div>
-              <div className="absolute top-2/3 right-1/4 w-32 h-1 bg-white/30"></div>
-              <div className="absolute top-1/6 right-1/6 w-1 h-20 bg-white/40"></div>
-            </div>
-
-            {/* Progressive overlay */}
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-stone-50/20 to-stone-50/50"></div>
-          </div>
-        </div>
-
-        {/* Mobile responsive background */}
-        <div className="lg:hidden absolute inset-0 -z-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url('/Project 1/p${currentSection + 1}.png${currentSection > 0 ? '.png' : ''}')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              transition: "background-image 0.5s ease-in-out",
-            }}
-          />
-          <div className="absolute inset-0 bg-stone-50/60"></div>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+          </button>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

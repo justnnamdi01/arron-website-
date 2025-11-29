@@ -5,7 +5,7 @@ import { ProjectSlideshow } from "@/components/project-slideshow"
 import { VideoSection } from "@/components/video-section"
 
 import { FloorPlanSection } from "@/components/floor-plan-section"
-import { ReviewsSection } from "@/components/reviews-section"
+import { ReviewsSectionGSAP } from "@/components/reviews-section-gsap"
 import { ArchitectProfile } from "@/components/architect-profile"
 
 import { FAQSection } from "@/components/faq-section"
@@ -41,8 +41,8 @@ export default function Home() {
 
 
 
-      {/* Reviews Section */}
-      <ReviewsSection />
+      {/* Reviews Section - GSAP Enhanced */}
+      <ReviewsSectionGSAP />
 
       {/* Architect Profile Section */}
       <ArchitectProfile />

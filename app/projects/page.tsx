@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   },
 }
 
-import { ProjectGallery } from '@/components/project-gallery'
+import { ProjectGalleryGSAP } from '@/components/project-gallery-gsap'
 
 export default function ProjectsPage() {
-  return <ProjectGallery />
+  return <ProjectGalleryGSAP />
 }

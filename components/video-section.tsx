@@ -9,6 +9,7 @@ export function VideoSection() {
   const [fullscreenVideo, setFullscreenVideo] = useState<string | null>(null)
   const sectionRef = useRef<HTMLDivElement>(null)
   const videoRefs = useRef<(HTMLDivElement | null)[]>([null, null, null])
+  const videoElementRefs = useRef<(HTMLVideoElement | null)[]>([null, null, null])
 
   useEffect(() => {
     setIsMounted(true)
@@ -18,6 +19,15 @@ export function VideoSection() {
         if (entry.isIntersecting) {
           setIsVisible(true)
           console.log('Video section is now visible!')
+          
+          // Force play all videos on mobile
+          videoElementRefs.current.forEach(video => {
+            if (video) {
+              video.play().catch(error => {
+                console.log("Video autoplay prevented:", error)
+              })
+            }
+          })
         } else {
           // Reset animation when leaving viewport
           setIsVisible(false)
@@ -92,6 +102,7 @@ export function VideoSection() {
             onClick={() => setFullscreenVideo('/video/Clip 3.mp4')}
           >
             <video
+              ref={(el) => { videoElementRefs.current[0] = el }}
               className={`w-full h-full object-cover transition-all duration-1000 ease-out ${
                 (isVisible || isMounted) ? 'scale-100 opacity-100' : 'scale-125 opacity-0'
               } group-hover:scale-105`}
@@ -99,6 +110,8 @@ export function VideoSection() {
               loop
               muted
               playsInline
+              webkit-playsinline="true"
+              x5-playsinline="true"
             >
               <source src="/video/Clip 3.mp4" type="video/mp4" />
               Your browser does not support the video tag.
@@ -130,6 +143,7 @@ export function VideoSection() {
             onClick={() => setFullscreenVideo('/video/Clip 4.mp4')}
           >
             <video
+              ref={(el) => { videoElementRefs.current[1] = el }}
               className={`w-full h-full object-cover transition-all duration-1000 ease-out delay-200 ${
                 (isVisible || isMounted) ? 'scale-100 opacity-100' : 'scale-125 opacity-0'
               } group-hover:scale-105`}
@@ -137,6 +151,8 @@ export function VideoSection() {
               loop
               muted
               playsInline
+              webkit-playsinline="true"
+              x5-playsinline="true"
             >
               <source src="/video/Clip 4.mp4" type="video/mp4" />
               Your browser does not support the video tag.
@@ -169,6 +185,7 @@ export function VideoSection() {
           onClick={() => setFullscreenVideo('/video/Clip 5.mp4')}
         >
           <video
+            ref={(el) => { videoElementRefs.current[2] = el }}
             className={`w-full h-full object-cover transition-all duration-1000 ease-out delay-400 ${
               (isVisible || isMounted) ? 'scale-100 opacity-100' : 'scale-125 opacity-0'
             } group-hover:scale-105`}
@@ -176,6 +193,8 @@ export function VideoSection() {
             loop
             muted
             playsInline
+            webkit-playsinline="true"
+            x5-playsinline="true"
           >
             <source src="/video/Clip 5.mp4" type="video/mp4" />
             Your browser does not support the video tag.

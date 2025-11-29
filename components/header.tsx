@@ -52,14 +52,14 @@ export function Header() {
     }`}>
       <div className="container mx-auto px-6">
         <div className={`flex items-center justify-between transition-all duration-300 ${
-          isScrolled ? 'py-3' : 'py-5'
+          isScrolled ? 'py-2' : 'py-3'
         }`}>
           
           {/* Logo Section */}
-          <Link href="/" className="flex items-center space-x-4 group relative z-10">
+          <Link href="/" className="flex items-center space-x-2 md:space-x-3 group relative z-10">
             {/* Main Logo */}
             <div className={`relative transition-all duration-300 group-hover:scale-105 ${
-              isScrolled ? 'w-24 h-24' : 'w-28 h-28'
+              isScrolled ? 'w-12 h-12 md:w-16 md:h-16' : 'w-14 h-14 md:w-18 md:h-18'
             }`} style={{
               filter: 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.4)) drop-shadow(0 0 16px rgba(251, 191, 36, 0.2))',
             }}>
@@ -74,7 +74,7 @@ export function Header() {
             
             {/* Secondary Logo */}
             <div className={`relative opacity-80 transition-all duration-300 group-hover:opacity-100 ${
-              isScrolled ? 'w-17 h-17' : 'w-20 h-20'
+              isScrolled ? 'w-10 h-10 md:w-14 md:h-14' : 'w-12 h-12 md:w-16 md:h-16'
             }`} style={{
               filter: 'drop-shadow(0 0 6px rgba(251, 191, 36, 0.3)) drop-shadow(0 0 12px rgba(251, 191, 36, 0.15))',
             }}>
@@ -91,12 +91,12 @@ export function Header() {
             <div className="hidden sm:block">
               <span className={`font-light tracking-wider transition-all duration-300 ${
                 isScrolled 
-                  ? 'text-lg text-stone-900' 
-                  : 'text-xl text-white'
+                  ? 'text-sm md:text-base text-stone-900' 
+                  : 'text-base md:text-lg text-white'
               }`}>
                 ENOU/HR
               </span>
-              <div className={`text-xs tracking-widest font-light -mt-1 ${
+              <div className={`text-xs tracking-widest font-light -mt-0.5 ${
                 isScrolled ? 'text-stone-500' : 'text-white/80'
               }`}>
                 PREMIUM DESIGN SERVICES
@@ -126,12 +126,12 @@ export function Header() {
           </nav>
 
           {/* CTA Button & Mobile Menu Toggle */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3 md:space-x-4">
             {/* CTA Button */}
             <div className="hidden md:inline-flex">
               <WhatsAppConsultation 
                 triggerText="GET CONSULTATION"
-                triggerClassName="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium text-sm tracking-wide rounded-full hover:from-amber-600 hover:to-orange-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                triggerClassName="px-4 md:px-6 py-2 md:py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium text-xs md:text-sm tracking-wide rounded-full hover:from-amber-600 hover:to-orange-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
               />
             </div>
 

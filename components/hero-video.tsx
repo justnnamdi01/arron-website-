@@ -1,13 +1,21 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
 
 export function HeroVideo() {
   const [isMounted, setIsMounted] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     setIsMounted(true)
+    
+    // Force play on mobile devices
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.log("Video autoplay prevented:", error)
+      })
+    }
   }, [])
 
   return (
@@ -15,10 +23,13 @@ export function HeroVideo() {
       {/* Background Video */}
       <div className="absolute inset-0">
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
+          webkit-playsinline="true"
+          x5-playsinline="true"
           className="w-full h-full object-cover"
           preload="auto"
         >

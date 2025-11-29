@@ -6,12 +6,19 @@ import Link from 'next/link'
 export function ArchitectureStudioVideo() {
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true)
+          // Force play video on mobile
+          if (videoRef.current) {
+            videoRef.current.play().catch(error => {
+              console.log("Video autoplay prevented:", error)
+            })
+          }
         }
       },
       { threshold: 0.2 }
@@ -127,10 +134,13 @@ export function ArchitectureStudioVideo() {
               <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 p-1">
                 <div className="relative overflow-hidden rounded-xl bg-black">
                   <video
+                    ref={videoRef}
                     autoPlay
                     muted
                     loop
                     playsInline
+                    webkit-playsinline="true"
+                    x5-playsinline="true"
                     className="w-full h-[70vh] object-cover"
                   >
                     <source src="/video/first (1).mp4" type="video/mp4" />

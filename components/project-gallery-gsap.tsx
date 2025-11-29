@@ -354,11 +354,11 @@ export function ProjectGalleryGSAP() {
 
       <Header />
       
-      <div className="pt-20 flex h-screen overflow-hidden relative z-10">
+      <div className="pt-16 md:pt-20 flex h-screen overflow-hidden relative z-10">
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden fixed top-24 left-4 z-50 bg-stone-900 text-white p-3 rounded-lg shadow-2xl border border-stone-700 hover:bg-stone-800 transition-all duration-300"
+          className="lg:hidden fixed top-16 md:top-20 left-4 z-50 bg-stone-900 text-white p-2 md:p-3 rounded-lg shadow-2xl border border-stone-700 hover:bg-stone-800 transition-all duration-300"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />

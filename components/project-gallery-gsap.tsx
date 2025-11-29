@@ -278,6 +278,18 @@ export function ProjectGalleryGSAP() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const goToNextProject = () => {
+    const currentIndex = projects.findIndex(p => p.id === selectedProject?.id)
+    const nextIndex = (currentIndex + 1) % projects.length
+    handleProjectSelect(projects[nextIndex])
+  }
+
+  const goToPrevProject = () => {
+    const currentIndex = projects.findIndex(p => p.id === selectedProject?.id)
+    const prevIndex = (currentIndex - 1 + projects.length) % projects.length
+    handleProjectSelect(projects[prevIndex])
+  }
+
   const openLightbox = (image: ImageItem, index: number) => {
     setLightboxImage(image)
     setLightboxIndex(index)
@@ -371,8 +383,8 @@ export function ProjectGalleryGSAP() {
             <div className="w-16 h-px bg-amber-500 mt-3"></div>
           </div>
 
-          <nav className="p-6">
-            <ul className="space-y-3">
+          <nav className="p-4 md:p-6">
+            <ul className="space-y-2 md:space-y-3">
               {projects.map((project, index) => (
                 <li key={project.id}>
                   <button
@@ -380,15 +392,36 @@ export function ProjectGalleryGSAP() {
                       sidebarItemRefs.current[index] = el
                     }}
                     onClick={() => handleProjectSelect(project)}
-                    className={`w-full text-left px-4 py-4 rounded-xl transition-all duration-300 group relative overflow-hidden ${
+                    className={`w-full text-left px-3 md:px-4 py-3 md:py-4 rounded-lg md:rounded-xl transition-all duration-300 group relative overflow-hidden ${
                       selectedProject?.id === project.id
-                        ? 'bg-amber-500/20 text-white border border-amber-500/50'
-                        : 'text-stone-300 hover:bg-stone-800 hover:text-white border border-transparent'
+                        ? 'bg-amber-500/20 text-white border-2 border-amber-500/50 shadow-lg shadow-amber-500/20'
+                        : 'text-stone-300 hover:bg-stone-800 hover:text-white border border-stone-700 hover:border-stone-600'
                     }`}
                   >
-                    <div className="relative z-10">
-                      <span className="font-medium tracking-wide text-sm block mb-1">{project.title}</span>
-                      <span className="text-xs text-stone-400">{project.category}</span>
+                    {/* Active indicator bar */}
+                    {selectedProject?.id === project.id && (
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
+                    )}
+                    
+                    <div className="relative z-10 flex items-center justify-between">
+                      <div className="flex-1 min-w-0">
+                        <span className="font-medium tracking-wide text-xs md:text-sm block mb-1 truncate">{project.title}</span>
+                        <span className="text-xs text-stone-400 truncate block">{project.category}</span>
+                      </div>
+                      
+                      {/* Arrow indicator */}
+                      <svg 
+                        className={`w-4 h-4 ml-2 flex-shrink-0 transition-all duration-300 ${
+                          selectedProject?.id === project.id 
+                            ? 'text-amber-500 translate-x-0' 
+                            : 'text-stone-600 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'
+                        }`}
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
                     </div>
                   </button>
                 </li>
@@ -401,14 +434,55 @@ export function ProjectGalleryGSAP() {
         <div className="flex-1 overflow-y-auto relative">
           {selectedProject && (
             <div className="p-6 lg:p-8">
-              {/* Project Header */}
-              <div ref={projectHeaderRef} className="mb-12 text-center lg:text-left">
-                <h2 className="text-4xl lg:text-6xl font-light text-white mb-4 tracking-wider">
-                  {selectedProject.title}
-                </h2>
-                <div className="w-24 h-px bg-gradient-to-r from-amber-500 to-orange-500 mx-auto lg:mx-0 mb-4"></div>
-                <p className="text-stone-300 text-lg mb-2">{selectedProject.category}</p>
-                <p className="text-stone-400 max-w-2xl mx-auto lg:mx-0">{selectedProject.description}</p>
+              {/* Project Header with Navigation */}
+              <div ref={projectHeaderRef} className="mb-12">
+                {/* Navigation Buttons */}
+                <div className="flex items-center justify-between mb-8">
+                  <button
+                    onClick={goToPrevProject}
+                    className="flex items-center space-x-2 px-4 py-2 bg-stone-900/80 hover:bg-stone-800 border border-stone-700 hover:border-amber-500/50 text-stone-300 hover:text-white rounded-lg transition-all duration-300 group"
+                  >
+                    <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span className="text-sm font-light hidden md:inline">Previous</span>
+                  </button>
+
+                  <div className="flex items-center space-x-2">
+                    {projects.map((project, index) => (
+                      <button
+                        key={project.id}
+                        onClick={() => handleProjectSelect(project)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          selectedProject?.id === project.id
+                            ? 'bg-amber-500 scale-125'
+                            : 'bg-stone-600 hover:bg-stone-500 hover:scale-110'
+                        }`}
+                        title={project.title}
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={goToNextProject}
+                    className="flex items-center space-x-2 px-4 py-2 bg-stone-900/80 hover:bg-stone-800 border border-stone-700 hover:border-amber-500/50 text-stone-300 hover:text-white rounded-lg transition-all duration-300 group"
+                  >
+                    <span className="text-sm font-light hidden md:inline">Next</span>
+                    <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Project Title and Info */}
+                <div className="text-center lg:text-left">
+                  <h2 className="text-3xl md:text-4xl lg:text-6xl font-light text-white mb-4 tracking-wider">
+                    {selectedProject.title}
+                  </h2>
+                  <div className="w-24 h-px bg-gradient-to-r from-amber-500 to-orange-500 mx-auto lg:mx-0 mb-4"></div>
+                  <p className="text-stone-300 text-base md:text-lg mb-2">{selectedProject.category}</p>
+                  <p className="text-stone-400 text-sm md:text-base max-w-2xl mx-auto lg:mx-0">{selectedProject.description}</p>
+                </div>
               </div>
 
               {/* Image Grid */}

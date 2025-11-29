@@ -75,12 +75,12 @@ export function VideoSection() {
       {/* Transparent dark overlay for contrast */}
       <div className="absolute inset-0 bg-black/40 pointer-events-none z-[1]"></div>
       {/* Video Grid Container - Mobile responsive */}
-      <div className="h-full w-full grid grid-rows-2 md:grid-rows-2 gap-0 relative z-[2]">
+      <div className="h-full w-full grid grid-cols-2 md:grid-rows-2 gap-0 relative z-[2]">
         
         {/* Top Row - Responsive layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 relative">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-0 relative col-span-2">
           
-          {/* Video 1 - Top Left/Mobile Top */}
+          {/* Video 1 - Top Left */}
           <div 
             ref={(el) => { videoRefs.current[0] = el }}
             data-video-index="0"
@@ -115,14 +115,14 @@ export function VideoSection() {
             </div>
           </div>
 
-          {/* Vertical Separator - hidden on mobile */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/20 z-10 transform -translate-x-px hidden sm:block"></div>
+          {/* Vertical Separator */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/20 z-10 transform -translate-x-px"></div>
 
-          {/* Video 2 - Top Right/Hidden on mobile */}
+          {/* Video 2 - Top Right */}
           <div 
             ref={(el) => { videoRefs.current[1] = el }}
             data-video-index="1"
-            className={`relative overflow-hidden group hidden sm:block transition-all duration-1000 ease-out delay-200 ${
+            className={`relative overflow-hidden group transition-all duration-1000 ease-out delay-200 ${
               videoVisibility[1] 
                 ? 'opacity-100 transform translate-x-0 translate-y-0 scale-100' 
                 : 'opacity-0 transform translate-x-20 -translate-y-10 scale-95'
@@ -145,11 +145,11 @@ export function VideoSection() {
             {/* Overlay for hover effect */}
             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Text overlay with enhanced scroll reveal */}
-            <div className={`absolute bottom-6 left-6 text-white transition-all duration-1000 ease-out delay-500 ${
+            {/* Text overlay with enhanced scroll reveal - responsive */}
+            <div className={`absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white transition-all duration-1000 ease-out delay-500 ${
               isVisible ? 'opacity-100 transform translate-y-0 translate-x-0' : 'opacity-0 transform translate-y-12 translate-x-8'
             }`}>
-              <h3 className="text-lg font-light tracking-wide">CONSTRUCTION</h3>
+              <h3 className="text-sm sm:text-lg font-light tracking-wide">CONSTRUCTION</h3>
             </div>
           </div>
         </div>
@@ -157,11 +157,11 @@ export function VideoSection() {
         {/* Horizontal Separator */}
         <div className="absolute left-0 right-0 top-1/2 h-px bg-white/20 z-10 transform -translate-y-px"></div>
 
-        {/* Bottom Row - One Rectangular Video */}
+        {/* Bottom Row - One Rectangular Video - Spans 2 columns */}
         <div 
           ref={(el) => { videoRefs.current[2] = el }}
           data-video-index="2"
-          className={`relative overflow-hidden group transition-all duration-1000 ease-out delay-400 ${
+          className={`relative overflow-hidden group transition-all duration-1000 ease-out delay-400 col-span-2 ${
             videoVisibility[2] 
               ? 'opacity-100 transform translate-x-0 translate-y-0 scale-100' 
               : 'opacity-0 transform translate-y-20 scale-95'

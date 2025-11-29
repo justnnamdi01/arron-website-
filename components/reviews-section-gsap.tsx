@@ -334,7 +334,7 @@ export function ReviewsSectionGSAP() {
 
         {/* Reviews Grid with 3D perspective */}
         <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-20"
+          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-8 mb-20"
           style={{ transformStyle: "preserve-3d" }}
         >
           {reviews.map((review, index) => (
@@ -343,7 +343,7 @@ export function ReviewsSectionGSAP() {
               ref={(el) => {
                 cardsRef.current[index] = el
               }}
-              className="group relative bg-gradient-to-br from-stone-900/80 to-stone-950/80 backdrop-blur-xl border border-stone-800 rounded-2xl p-6 md:p-8 cursor-pointer overflow-hidden"
+              className="group relative bg-gradient-to-br from-stone-900/80 to-stone-950/80 backdrop-blur-xl border border-stone-800 rounded-lg md:rounded-2xl p-4 md:p-6 lg:p-8 cursor-pointer overflow-hidden"
               style={{
                 transformStyle: "preserve-3d",
                 willChange: "transform",
@@ -356,36 +356,36 @@ export function ReviewsSectionGSAP() {
               <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-yellow-500/30 transition-all duration-500"></div>
 
               {/* Stars */}
-              <div className="flex space-x-1 mb-4">
+              <div className="flex space-x-0.5 md:space-x-1 mb-3 md:mb-4">
                 {renderStars(review.rating)}
               </div>
 
               {/* Review Text with typewriter */}
-              <div className="mb-6 min-h-[120px]">
+              <div className="mb-4 md:mb-6 min-h-[100px] md:min-h-[120px]">
                 <p
                   ref={(el) => {
                     textRefs.current[index] = el
                   }}
-                  className="text-white/90 text-base leading-relaxed font-light"
+                  className="text-white/90 text-xs md:text-sm lg:text-base leading-relaxed font-light"
                 >
                   "{review.review}"
                 </p>
-                <span className="inline-block w-2 h-4 bg-yellow-400 ml-1 animate-pulse"></span>
+                <span className="inline-block w-1.5 md:w-2 h-3 md:h-4 bg-yellow-400 ml-1 animate-pulse"></span>
               </div>
 
               {/* Client Info with Avatar */}
-              <div className="flex items-center space-x-4 border-t border-stone-800 pt-6">
+              <div className="flex items-center space-x-2 md:space-x-4 border-t border-stone-800 pt-4 md:pt-6">
                 <div
                   ref={(el) => {
                     avatarRefs.current[index] = el
                   }}
-                  className="relative"
+                  className="relative flex-shrink-0"
                 >
                   {/* Glow pulse effect */}
                   <div className="avatar-glow absolute inset-0 bg-yellow-500/50 rounded-full blur-md"></div>
                   
                   {/* Avatar */}
-                  <div className="relative w-14 h-14 rounded-full overflow-hidden ring-2 ring-yellow-500/50">
+                  <div className="relative w-10 h-10 md:w-14 md:h-14 rounded-full overflow-hidden ring-2 ring-yellow-500/50">
                     <Image
                       src={review.avatar}
                       alt={review.name}
@@ -395,23 +395,23 @@ export function ReviewsSectionGSAP() {
                   </div>
 
                   {/* Online indicator */}
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-black rounded-full"></div>
+                  <div className="absolute -bottom-0.5 -right-0.5 md:-bottom-1 md:-right-1 w-3 h-3 md:w-4 md:h-4 bg-green-500 border-2 border-black rounded-full"></div>
                 </div>
 
-                <div className="flex-1">
-                  <h4 className="text-white font-medium text-base">
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-white font-medium text-xs md:text-sm lg:text-base truncate">
                     {review.name}
                   </h4>
-                  <p className="text-stone-400 text-sm">
+                  <p className="text-stone-400 text-xs md:text-sm truncate">
                     {review.role}
                   </p>
-                  <p className="text-stone-500 text-xs mt-1">
+                  <p className="text-stone-500 text-xs mt-0.5 md:mt-1 truncate hidden md:block">
                     {review.company}
                   </p>
                 </div>
 
                 {/* Project badge */}
-                <div className="hidden md:block">
+                <div className="hidden lg:block">
                   <span className="text-xs px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full border border-yellow-500/30">
                     {review.project}
                   </span>
@@ -419,13 +419,13 @@ export function ReviewsSectionGSAP() {
               </div>
 
               {/* Decorative corner element */}
-              <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-yellow-500/20 group-hover:border-yellow-500/50 transition-all duration-500"></div>
+              <div className="absolute top-2 right-2 md:top-4 md:right-4 w-6 h-6 md:w-8 md:h-8 border-t-2 border-r-2 border-yellow-500/20 group-hover:border-yellow-500/50 transition-all duration-500"></div>
             </div>
           ))}
         </div>
 
         {/* Statistics with animation */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-5xl mx-auto">
           {[
             { number: "150+", label: "Projects Completed" },
             { number: "98%", label: "Client Satisfaction" },
@@ -439,15 +439,15 @@ export function ReviewsSectionGSAP() {
               }}
               className="text-center group cursor-pointer"
             >
-              <div className="relative inline-block mb-3">
+              <div className="relative inline-block mb-2 md:mb-3">
                 {/* Glow effect */}
                 <div className="absolute inset-0 bg-yellow-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
-                <div className="relative text-5xl md:text-6xl font-light text-yellow-400 group-hover:scale-110 transition-transform duration-300">
+                <div className="relative text-3xl md:text-5xl lg:text-6xl font-light text-yellow-400 group-hover:scale-110 transition-transform duration-300">
                   {stat.number}
                 </div>
               </div>
-              <div className="text-stone-400 text-sm uppercase tracking-wider">
+              <div className="text-stone-400 text-xs md:text-sm uppercase tracking-wider px-2">
                 {stat.label}
               </div>
             </div>

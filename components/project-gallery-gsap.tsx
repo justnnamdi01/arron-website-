@@ -412,16 +412,16 @@ export function ProjectGalleryGSAP() {
               </div>
 
               {/* Image Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
                 {imageColumns.map((column, columnIndex) => (
-                  <div key={columnIndex} className="space-y-4">
+                  <div key={columnIndex} className="space-y-2 md:space-y-4">
                     {column.map((image, imageIndex) => {
                       const globalIndex = columnIndex * Math.ceil(images.length / 3) + imageIndex
                       return (
                         <div
                           key={globalIndex}
                           ref={(el) => { imageRefs.current[globalIndex] = el }}
-                          className="group relative overflow-hidden rounded-xl border border-stone-800 hover:border-amber-500/50 transition-all duration-500 cursor-pointer"
+                          className="group relative overflow-hidden rounded-lg md:rounded-xl border border-stone-800 hover:border-amber-500/50 transition-all duration-500 cursor-pointer"
                           style={{ perspective: "1000px" }}
                           onClick={() => openLightbox(image, globalIndex)}
                         >

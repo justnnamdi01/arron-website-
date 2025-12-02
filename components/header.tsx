@@ -50,7 +50,7 @@ export function Header() {
     } ${
       isVisible ? 'translate-y-0' : '-translate-y-full'
     }`}>
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className={`flex items-center justify-between transition-all duration-300 ${
           isScrolled ? 'py-2' : 'py-3'
         }`}>
@@ -158,14 +158,14 @@ export function Header() {
         <div className={`lg:hidden overflow-hidden transition-all duration-500 ${
           isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <nav className="py-6 border-t border-white/30 bg-white/20 backdrop-blur-xl rounded-b-xl shadow-xl shadow-black/10">
+          <nav className="py-4 border-t border-stone-800 bg-stone-950/95 backdrop-blur-xl shadow-xl shadow-black/40 rounded-b-2xl">
             <div className="space-y-4">
               {navItems.map((item, index) => (
                 <Link 
                   key={item.label}
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 rounded-lg mx-2 backdrop-blur-sm"
+                  className="block px-4 py-3 text-white/90 hover:text-white hover:bg-stone-800/80 transition-all duration-300 rounded-lg mx-2"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <span className="font-light tracking-wide">{item.label}</span>
@@ -173,7 +173,7 @@ export function Header() {
               ))}
               
               {/* Mobile CTA Button */}
-              <div className="px-4 pt-4 border-t border-white/30 mt-4">
+              <div className="px-4 pt-4 border-t border-stone-800 mt-4">
                 <WhatsAppConsultation 
                   triggerText="GET CONSULTATION"
                   triggerClassName="flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium text-sm tracking-wide rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all duration-300"
@@ -183,6 +183,13 @@ export function Header() {
           </nav>
         </div>
       </div>
+      {/* Mobile menu backdrop */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
     </header>
   )
 }

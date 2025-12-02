@@ -2,7 +2,6 @@ import { ParallaxSectionGSAP } from "@/components/parallax-section-gsap"
 import { Header } from "@/components/header"
 import { HeroVideo } from "@/components/hero-video"
 import { ProjectSlideshow } from "@/components/project-slideshow"
-import { VideoSection } from "@/components/video-section"
 
 import { FloorPlanSection } from "@/components/floor-plan-section"
 import { ReviewsSectionGSAP } from "@/components/reviews-section-gsap"
@@ -13,6 +12,7 @@ import { Footer } from "@/components/footer"
 import { ChatButton } from "@/components/chat-button"
 import { ArchitectureStudioVideo } from "@/components/architecture-studio-video"
 import { PaymentSection } from "@/components/payment-section"
+import { VideoSection } from "@/components/video-section"
 
 export default function Home() {
   return (
@@ -25,14 +25,14 @@ export default function Home() {
       {/* Parallax Section with Architectural Planning - GSAP Enhanced */}
       <ParallaxSectionGSAP />
       
+      {/* Video Section */}
+      <VideoSection />
+      
       {/* Architecture Studio Video Section */}
       <ArchitectureStudioVideo />
       
       {/* Project Slideshow */}
       <ProjectSlideshow />
-      
-      {/* Video Section */}
-      <VideoSection />
 
 
 

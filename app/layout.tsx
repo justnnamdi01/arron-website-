@@ -3,20 +3,30 @@ import './globals.css'
 import { WhatsAppFloatingButton } from '@/components/whatsapp-floating-button'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://yourarchitecturestudio.com'),
+  metadataBase: new URL('https://enou-architecture.com'),
   title: {
-    default: 'Architecture Studio - Award-Winning Design & Construction',
-    template: '%s | Architecture Studio'
+    default: "Enou Architecture Studio – Residential & Commercial Design",
+    template: '%s | Enou Architecture Studio',
   },
-  description: 'Award-winning architecture studio specializing in innovative residential and commercial design, sustainable planning, and collaborative construction processes. Transform your vision into reality.',
+  description:
+    'Enou Architecture Studio crafts bespoke residential and commercial spaces, blending modern design, timeless elegance, and sustainable thinking to bring your vision to life.',
   keywords: [
-    'architecture', 'architect', 'design', 'construction', 'planning', 
-    'sustainable', 'residential', 'commercial', 'renovation', 'blueprint',
-    'building design', 'interior design', 'urban planning', 'green building'
+    'Enou architecture',
+    'architecture studio',
+    'architect',
+    'residential design',
+    'commercial architecture',
+    'modern villa design',
+    'interior architecture',
+    'Mauritius architect',
+    'African architecture studio',
+    'sustainable architecture',
+    'luxury home design',
+    '3D visualization',
   ],
-  authors: [{ name: 'Architecture Studio', url: 'https://yourarchitecturestudio.com' }],
-  creator: 'Architecture Studio',
-  publisher: 'Architecture Studio',
+  authors: [{ name: 'Enou Architecture Studio', url: 'https://enou-architecture.com' }],
+  creator: 'Enou Architecture Studio',
+  publisher: 'Enou Architecture Studio',
   robots: {
     index: true,
     follow: true,
@@ -31,28 +41,38 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://yourarchitecturestudio.com',
-    title: 'Architecture Studio - Award-Winning Design & Construction',
-    description: 'Award-winning architecture studio specializing in innovative design, sustainable planning, and collaborative construction processes.',
-    siteName: 'Architecture Studio',
+    url: 'https://enou-architecture.com',
+    title: 'Enou Architecture Studio – Residential & Commercial Design',
+    description:
+      'Bespoke architecture studio creating contemporary homes, villas, and commercial spaces with a focus on craft, proportion, and lived experience.',
+    siteName: 'Enou Architecture Studio',
     images: [
       {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Architecture Studio - Professional Design Services',
+        url: '/logo/LOGO.png',
+        width: 800,
+        height: 800,
+        alt: 'Enou Architecture Studio Logo',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Architecture Studio - Award-Winning Design & Construction',
-    description: 'Award-winning architecture studio specializing in innovative design, sustainable planning, and collaborative construction processes.',
-    images: ['/og-image.jpg'],
+    title: 'Enou Architecture Studio – Residential & Commercial Design',
+    description:
+      'Explore Enou’s world of architecture – thoughtful residential and commercial projects with cinematic storytelling and refined detail.',
+    images: ['/logo/LOGO.png'],
   },
   verification: {
-    google: 'your-google-verification-code',
-    yandex: 'your-yandex-verification-code',
+    google: '',
+    yandex: '',
+  },
+  icons: {
+    icon: '/logo/LOGO.png',
+    shortcut: '/logo/LOGO.png',
+    apple: '/logo/LOGO.png',
+  },
+  alternates: {
+    canonical: '/',
   },
 }
 

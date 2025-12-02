@@ -16,56 +16,96 @@ const portfolioProjects = [
     id: 1,
     title: "KOTO Villa",
     category: "Residential Architecture",
-    image: "/project pages/KOTO/1.jpg",
+    images: [
+      "/project pages/KOTO/1.jpg",
+      "/project pages/KOTO/2.jpg",
+      "/project pages/KOTO/3.jpg",
+      "/project pages/KOTO/4.jpg",
+    ],
     description: "Modern luxury villa with contemporary design elements",
   },
   {
     id: 2,
     title: "DÔTÛ Villa",
     category: "Modern Living",
-    image: "/project pages/DÔTÛ VILLA/Image.png",
+    images: [
+      "/project pages/DÔTÛ VILLA/Image.png",
+      "/project pages/DÔTÛ VILLA/8.jpg",
+      "/project pages/DÔTÛ VILLA/9.jpg",
+      "/project pages/DÔTÛ VILLA/IN8.jpg",
+    ],
     description: "Sophisticated residential design with elegant interiors",
   },
   {
     id: 3,
     title: "LA CASA",
     category: "Contemporary Design",
-    image: "/project pages/LA CASA/S_1 - Photo.png",
+    images: [
+      "/project pages/LA CASA/S_1 - Photo.png",
+      "/project pages/LA CASA/S_12 - Photo.png",
+      "/project pages/LA CASA/S_13 - Photo.jpg",
+      "/project pages/LA CASA/S_15 - Photo.jpg",
+    ],
     description: "Stunning architectural masterpiece",
   },
   {
     id: 4,
     title: "JORDAN Villa",
     category: "Luxury Residence",
-    image: "/project pages/JORDAN VILLA/1.1.jpg",
+    images: [
+      "/project pages/JORDAN VILLA/1.1.jpg",
+      "/project pages/JORDAN VILLA/03.jpg",
+      "/project pages/JORDAN VILLA/04.jpg",
+      "/project pages/JORDAN VILLA/05.jpg",
+    ],
     description: "Premium villa with exceptional detailing",
   },
   {
     id: 5,
     title: "MINI LUX",
     category: "Compact Luxury",
-    image: "/project pages/MINI LUX/1.jpg",
+    images: [
+      "/project pages/MINI LUX/1.jpg",
+      "/project pages/MINI LUX/10.jpg",
+      "/project pages/MINI LUX/12.jpg",
+      "/project pages/MINI LUX/13.jpg",
+    ],
     description: "Efficient luxury in compact spaces",
   },
   {
     id: 6,
     title: "THE GROOVE",
     category: "Modern Architecture",
-    image: "/project pages/THE GROOVE/1_1 - Photo.jpg",
+    images: [
+      "/project pages/THE GROOVE/1.2.jpg",
+      "/project pages/THE GROOVE/1.3.jpg",
+      "/project pages/THE GROOVE/2.jpg",
+      "/project pages/THE GROOVE/3.1.jpg",
+    ],
     description: "Innovative design with rhythm and flow",
   },
   {
     id: 7,
     title: "Green Cross Apartments",
     category: "Multi-Unit Residential",
-    image: "/project pages/GREEN CROSS APARTMENTS/1.jpg",
+    images: [
+      "/project pages/GREEN CROSS APARTMENTS/1.jpg",
+      "/project pages/GREEN CROSS APARTMENTS/1_31 - Photo.jpg",
+      "/project pages/GREEN CROSS APARTMENTS/1_32 - Photo.jpg",
+      "/project pages/GREEN CROSS APARTMENTS/1_34 - Photo.jpg",
+    ],
     description: "Sustainable apartment complex",
   },
   {
     id: 8,
     title: "Interior Design",
     category: "Luxury Interiors",
-    image: "/project pages/Interior design/1.jpg",
+    images: [
+      "/project pages/Interior design/1.jpg",
+      "/project pages/Interior design/2.jpg",
+      "/project pages/Interior design/3.jpg",
+      "/project pages/Interior design/4.jpg",
+    ],
     description: "Bespoke interior design solutions",
   },
 ]
@@ -75,8 +115,15 @@ export function ParallaxSectionGSAP() {
   const titleRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const projectRefs = useRef<(HTMLDivElement | null)[]>([])
+  const viewAllRef = useRef<HTMLDivElement | null>(null)
   const [isMobile, setIsMobile] = useState(false)
   const [activeCard, setActiveCard] = useState<number | null>(null)
+  const [activeImageIndexes, setActiveImageIndexes] = useState<number[]>(
+    () => portfolioProjects.map(() => 0)
+  )
+  const [imageFadeStates, setImageFadeStates] = useState<boolean[]>(
+    () => portfolioProjects.map(() => true)
+  )
 
   // Detect mobile device
   useEffect(() => {
@@ -120,69 +167,104 @@ export function ParallaxSectionGSAP() {
         ease: "power3.out",
       })
 
-      // Animate each project card - slide in from different directions
+      // Animate each project card - staggered grid reveal
       projectRefs.current.forEach((card, index) => {
         if (!card) return
 
-        const isEven = index % 2 === 0
-        const delay = isMobile ? 0 : index * 0.1
+        // Calculate position in 4x4 grid
+        const row = Math.floor(index / 4)
+        const col = index % 4
+        
+        // Stagger delay based on position (diagonal wave effect)
+        const staggerDelay = (row + col) * 0.15
 
-        // Mobile: simpler, faster animations; Desktop: more dramatic
-        const mobileConfig = {
-          x: 0,
-          y: 80,
+        // Set initial state - fade and scale
+        gsap.set(card, {
           opacity: 0,
-          scale: 0.92,
-          rotationY: 0,
-        }
-
-        const desktopConfig = {
-          x: isEven ? -200 : 200,
-          y: 100,
-          opacity: 0,
-          scale: 0.8,
-          rotationY: isEven ? -15 : 15,
-        }
-
-        // Set initial state
-        gsap.set(card, isMobile ? mobileConfig : desktopConfig)
-
-        // Animate on scroll into view
-        gsap.to(card, {
-          scrollTrigger: {
-            trigger: card,
-            start: isMobile ? "top 90%" : "top 85%",
-            end: isMobile ? "top 60%" : "top 40%",
-            scrub: isMobile ? 1 : 1.5,
-            toggleActions: "play none none reverse",
-          },
-          x: 0,
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          rotationY: 0,
-          ease: "power3.out",
-          delay: delay,
+          scale: 0.85,
+          y: 40,
         })
 
-        // Parallax effect on scroll (lighter on mobile)
-        if (!isMobile) {
-          gsap.to(card, {
-            scrollTrigger: {
-              trigger: card,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 2,
-            },
-            y: -50,
-            ease: "none",
-          })
-        }
+        // Animate on scroll into view with stagger
+        gsap.to(card, {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 60%",
+            toggleActions: "play none none reverse",
+          },
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.8,
+          delay: staggerDelay,
+          ease: "power3.out",
+        })
       })
+
+      // Animate "View All Projects" button when it comes into view
+      if (viewAllRef.current) {
+        gsap.from(viewAllRef.current, {
+          scrollTrigger: {
+            trigger: viewAllRef.current,
+            start: "top 90%",
+            toggleActions: "play none none reverse",
+          },
+          opacity: 0,
+          y: 40,
+          duration: 0.8,
+          ease: "power3.out",
+        })
+      }
     }, sectionRef)
 
     return () => ctx.revert()
   }, [isMobile])
+
+  // Cycle project images in a domino pattern with smooth fade
+  useEffect(() => {
+    let currentCard = 0
+    const timeouts: number[] = []
+
+    const intervalId = window.setInterval(() => {
+      const index = currentCard
+      const images = portfolioProjects[index].images
+      if (!images || images.length <= 1) {
+        currentCard = (currentCard + 1) % portfolioProjects.length
+        return
+      }
+
+      // Start fade out for this card
+      setImageFadeStates((prev) => {
+        const next = [...prev]
+        next[index] = false
+        return next
+      })
+
+      // After fade-out, change image and fade back in
+      const timeoutId = window.setTimeout(() => {
+        setActiveImageIndexes((prev) => {
+          const next = [...prev]
+          const currentIndex = next[index] ?? 0
+          next[index] = (currentIndex + 1) % images.length
+          return next
+        })
+
+        setImageFadeStates((prev) => {
+          const next = [...prev]
+          next[index] = true
+          return next
+        })
+      }, 700) // half of fade duration for smoother crossfeel
+
+      timeouts.push(timeoutId)
+      currentCard = (currentCard + 1) % portfolioProjects.length
+    }, 3500) // 3.5s between cards for domino effect
+
+    return () => {
+      window.clearInterval(intervalId)
+      timeouts.forEach((id) => window.clearTimeout(id))
+    }
+  }, [])
 
   const handleProjectClick = (projectId: number) => {
     // Navigate to project detail or open modal
@@ -199,7 +281,8 @@ export function ParallaxSectionGSAP() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-12 md:py-20 lg:py-32 bg-gradient-to-b from-stone-50 via-stone-100 to-stone-50 overflow-hidden"
+      id="portfolio-section"
+      className="relative min-h-screen bg-gradient-to-b from-stone-50 via-stone-100 to-stone-50 overflow-hidden flex flex-col"
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -207,7 +290,7 @@ export function ParallaxSectionGSAP() {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-stone-900/5 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+      <div className="relative z-10 flex-1 flex flex-col w-full">
         {/* Section Header */}
         <div className="text-center mb-10 md:mb-16 lg:mb-24">
           <div className="inline-block mb-3 md:mb-4">
@@ -215,9 +298,9 @@ export function ParallaxSectionGSAP() {
           </div>
           <h2
             ref={titleRef}
-            className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-light tracking-wider text-stone-900 mb-4 md:mb-6 px-4"
+            className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-serif tracking-wide text-stone-900 mb-4 md:mb-6 px-4"
           >
-            OUR PORTFOLIO
+            Enou&apos;s World
           </h2>
           <p
             ref={subtitleRef}
@@ -227,8 +310,8 @@ export function ParallaxSectionGSAP() {
           </p>
         </div>
 
-        {/* Portfolio Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6 lg:gap-8">
+        {/* Portfolio Grid - 4x4 Layout filling the section, flush to edges */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-0 w-full flex-1">
           {portfolioProjects.map((project, index) => (
             <div
               key={project.id}
@@ -243,16 +326,23 @@ export function ParallaxSectionGSAP() {
               style={{ perspective: "1000px" }}
             >
               {/* Project Card */}
-              <div className="relative aspect-[3/4] overflow-hidden rounded-xl md:rounded-lg bg-stone-200 shadow-lg transition-all duration-500 group-hover:shadow-2xl active:shadow-xl touch-manipulation">
+              <div className="relative aspect-square overflow-hidden bg-stone-200 transition-all duration-500 group-hover:shadow-2xl active:shadow-xl touch-manipulation">
                 {/* Image Container */}
                 <div className="absolute inset-0 overflow-hidden">
                   <div className="relative w-full h-full transition-transform duration-700 ease-out group-hover:scale-110 group-active:scale-105">
                     <Image
-                      src={project.image}
+                      src={
+                        project.images[
+                          (activeImageIndexes[index] ?? 0) %
+                          (project.images.length || 1)
+                        ]
+                      }
                       alt={project.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover"
+                      className={`object-cover transition-opacity duration-700 ${
+                        imageFadeStates[index] ? "opacity-100" : "opacity-0"
+                      }`}
                       quality={85}
                       priority={index < 4}
                     />
@@ -263,43 +353,23 @@ export function ParallaxSectionGSAP() {
                 </div>
 
                 {/* Content Overlay */}
-                <div className="absolute inset-0 p-5 md:p-6 flex flex-col justify-end">
-                  {/* Category Badge - Always visible on mobile */}
-                  <div className="mb-2 md:mb-3 transform md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 md:delay-100">
-                    <span className="inline-block px-3 py-1 text-xs font-light tracking-wider text-white bg-amber-500/90 md:bg-amber-500/80 backdrop-blur-sm rounded-full">
+                <div className="absolute inset-0 p-3 md:p-4 lg:p-6 flex flex-col items-center justify-center text-center">
+                  {/* Category Badge - Hidden on mobile for cleaner grid */}
+                  <div className="mb-1 hidden md:block transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                    <span className="inline-block px-2 py-1 text-[10px] font-light tracking-wider text-white bg-amber-500/80 backdrop-blur-sm rounded-full">
                       {project.category}
                     </span>
                   </div>
 
-                  {/* Title - Always visible on mobile */}
-                  <h3 className="text-xl md:text-2xl lg:text-3xl font-light text-white mb-2 tracking-wide transform transition-all duration-500 md:group-hover:translate-y-0 md:translate-y-4">
+                  {/* Title - centered */}
+                  <h3 className="text-xs sm:text-sm md:text-base lg:text-xl font-light text-white mb-1 md:mb-2 tracking-wide">
                     {project.title}
                   </h3>
 
-                  {/* Description - Always visible on mobile, hidden on desktop until hover */}
-                  <p className="text-sm text-white/90 md:text-white/80 font-light transform md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 md:delay-150 line-clamp-2">
+                  {/* Description - Hidden on mobile, centered on desktop */}
+                  <p className="hidden md:block text-xs lg:text-sm text-white/80 font-light mt-1 max-w-xs mx-auto line-clamp-2">
                     {project.description}
                   </p>
-
-                  {/* View More Button - Always visible on mobile */}
-                  <div className="mt-3 md:mt-4 transform md:translate-y-6 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 md:delay-200">
-                    <div className="inline-flex items-center text-white text-xs md:text-sm font-light tracking-wider">
-                      VIEW PROJECT
-                      <svg
-                        className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform duration-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </div>
-                  </div>
                 </div>
 
                 {/* Animated Border */}
@@ -312,26 +382,6 @@ export function ParallaxSectionGSAP() {
           ))}
         </div>
 
-        {/* View All Projects Button */}
-        <div className="text-center mt-12 md:mt-16 lg:mt-24">
-          <button className="group relative inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-stone-900 text-white font-light tracking-wider text-xs md:text-sm overflow-hidden transition-all duration-500 hover:bg-amber-500 hover:shadow-xl active:scale-95 rounded-md touch-manipulation">
-            <span className="relative z-10">VIEW ALL PROJECTS</span>
-            <svg
-              className="w-4 md:w-5 h-4 md:h-5 ml-2 md:ml-3 transform group-hover:translate-x-2 transition-transform duration-300 relative z-10"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-          </button>
-        </div>
       </div>
     </section>
   )

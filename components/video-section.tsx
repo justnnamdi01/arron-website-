@@ -117,14 +117,15 @@ export function VideoSection() {
               Your browser does not support the video tag.
             </video>
             
-            {/* Overlay for hover effect */}
-            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            
-            {/* Text overlay with enhanced scroll reveal - responsive */}
-            <div className={`absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white transition-all duration-1000 ease-out delay-300 ${
-              isVisible ? 'opacity-100 transform translate-y-0 translate-x-0' : 'opacity-0 transform translate-y-12 translate-x-8'
-            }`}>
-              <h3 className="text-sm sm:text-lg font-light tracking-wide">DESIGN PROCESS</h3>
+            {/* Hover info tab - hidden until hover */}
+            <div className="absolute inset-x-0 bottom-0">
+              <div className="mx-3 sm:mx-4 mb-3 sm:mb-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
+                <div className="bg-black/70 backdrop-blur-sm px-3 sm:px-4 py-2 sm:py-3 rounded-t-lg flex items-center justify-between">
+                  <h3 className="text-xs sm:text-sm md:text-base font-light tracking-wide text-white">
+                    DESIGN PROCESS
+                  </h3>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -158,14 +159,15 @@ export function VideoSection() {
               Your browser does not support the video tag.
             </video>
             
-            {/* Overlay for hover effect */}
-            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            
-            {/* Text overlay with enhanced scroll reveal - responsive */}
-            <div className={`absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white transition-all duration-1000 ease-out delay-500 ${
-              isVisible ? 'opacity-100 transform translate-y-0 translate-x-0' : 'opacity-0 transform translate-y-12 translate-x-8'
-            }`}>
-              <h3 className="text-sm sm:text-lg font-light tracking-wide">CONSTRUCTION</h3>
+            {/* Hover info tab - hidden until hover */}
+            <div className="absolute inset-x-0 bottom-0">
+              <div className="mx-3 sm:mx-4 mb-3 sm:mb-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
+                <div className="bg-black/70 backdrop-blur-sm px-3 sm:px-4 py-2 sm:py-3 rounded-t-lg flex items-center justify-between">
+                  <h3 className="text-xs sm:text-sm md:text-base font-light tracking-wide text-white">
+                    CONSTRUCTION
+                  </h3>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -200,34 +202,17 @@ export function VideoSection() {
             Your browser does not support the video tag.
           </video>
           
-          {/* Overlay for hover effect */}
-          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          
-          {/* Text overlay with enhanced scroll reveal - responsive */}
-          <div className={`absolute bottom-4 left-4 sm:bottom-6 sm:left-6 text-white transition-all duration-1000 ease-out delay-700 ${
-            isVisible ? 'opacity-100 transform translate-y-0 translate-x-0' : 'opacity-0 transform translate-y-12 translate-x-8'
-          }`}>
-            <h3 className="text-sm sm:text-lg font-light tracking-wide">FINAL RESULT</h3>
-          </div>
-
-          {/* Central Text Overlay with dramatic scroll reveal - responsive */}
-          <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1500 ease-out delay-800 ${
-            isVisible ? 'opacity-100 transform translate-y-0 scale-100' : 'opacity-0 transform translate-y-20 scale-95'
-          }`}>
-            <div className="text-center text-white px-4 sm:px-8">
-              <div className={`w-12 sm:w-16 h-px bg-white mx-auto mb-4 sm:mb-6 transition-all duration-1000 delay-1000 ${
-                isVisible ? 'opacity-100 transform scale-x-100' : 'opacity-0 transform scale-x-0'
-              }`}></div>
-              <h2 className={`text-2xl sm:text-3xl md:text-5xl font-light tracking-wider mb-3 sm:mb-4 transition-all duration-1200 ease-out delay-1100 ${
-                isVisible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-16'
-              }`}>
-                ENOU PORTFOLIO FILMS
-              </h2>
-              <p className={`text-sm sm:text-lg md:text-xl font-light opacity-90 max-w-2xl transition-all duration-1000 ease-out delay-1300 ${
-                isVisible ? 'opacity-90 transform translate-y-0' : 'opacity-0 transform translate-y-12'
-              }`}>
-                Short films capturing built works, design intent, and the spaces that define our practice.
-              </p>
+          {/* Hover info tab - hidden until hover */}
+          <div className="absolute inset-x-0 bottom-0">
+            <div className="mx-3 sm:mx-6 mb-4 sm:mb-6 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
+              <div className="bg-black/75 backdrop-blur-sm px-4 sm:px-6 py-3 sm:py-4 rounded-t-xl text-center">
+                <h2 className="text-base sm:text-lg md:text-2xl font-light tracking-wider mb-1 text-white">
+                  ENOU PORTFOLIO FILMS
+                </h2>
+                <p className="text-xs sm:text-sm md:text-base font-light text-white/80 max-w-2xl mx-auto">
+                  Short films capturing built works, design intent, and the spaces that define our practice.
+                </p>
+              </div>
             </div>
           </div>
         </div>

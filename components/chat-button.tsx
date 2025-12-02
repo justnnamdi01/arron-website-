@@ -19,6 +19,7 @@ export function ChatButton() {
   const [inputMessage, setInputMessage] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`)
+  const [notificationText, setNotificationText] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -36,17 +37,31 @@ export function ChatButton() {
     }
     setMessages([welcomeMessage])
 
-    // Simulate new message notification after some time
-    const messageTimer = setTimeout(() => {
-      if (!isOpen) {
-        setHasNewMessage(true)
-      }
-    }, 10000)
-
     return () => {
       clearTimeout(timer)
-      clearTimeout(messageTimer)
     }
+  }, [isOpen])
+
+  // Show contextual notification when portfolio section is visible
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
+    const target = document.getElementById("portfolio-section")
+    if (!target) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isOpen) {
+          setNotificationText("Are you impressed by our work 😏")
+          setHasNewMessage(true)
+        }
+      },
+      { threshold: 0.4 }
+    )
+
+    observer.observe(target)
+
+    return () => observer.disconnect()
   }, [isOpen])
 
   useEffect(() => {
@@ -383,9 +398,9 @@ export function ChatButton() {
           </div>
         </button>
 
-        {/* Welcome Message Bubble */}
-        {!isOpen && hasNewMessage && (
-          <div className="absolute bottom-full right-0 mb-4 bg-white rounded-lg shadow-lg p-3 max-w-xs animate-bounce">
+        {/* Contextual Message Bubble */}
+        {!isOpen && hasNewMessage && notificationText && (
+          <div className="absolute bottom-full right-0 mb-4 bg-white rounded-lg shadow-lg p-3 max-w-xs animate-fade-in-up">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center p-1">
                 <Image
@@ -397,8 +412,7 @@ export function ChatButton() {
                 />
               </div>
               <div>
-                <p className="text-sm text-stone-900">New message!</p>
-                <p className="text-xs text-stone-600">We're here to help 👋</p>
+                <p className="text-sm text-stone-900">{notificationText}</p>
               </div>
             </div>
             <div className="absolute top-full right-6 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white"></div>

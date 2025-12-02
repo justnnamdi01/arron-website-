@@ -3,7 +3,7 @@ import './globals.css'
 import { WhatsAppFloatingButton } from '@/components/whatsapp-floating-button'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://enou-architecture.com'),
+  metadataBase: new URL('https://www.enou.mu'),
   title: {
     default: "Enou Architecture Studio – Residential & Commercial Design",
     template: '%s | Enou Architecture Studio',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     'luxury home design',
     '3D visualization',
   ],
-  authors: [{ name: 'Enou Architecture Studio', url: 'https://enou-architecture.com' }],
+  authors: [{ name: 'Enou Architecture Studio', url: 'https://www.enou.mu' }],
   creator: 'Enou Architecture Studio',
   publisher: 'Enou Architecture Studio',
   robots: {
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://enou-architecture.com',
+    url: 'https://www.enou.mu',
     title: 'Enou Architecture Studio – Residential & Commercial Design',
     description:
       'Bespoke architecture studio creating contemporary homes, villas, and commercial spaces with a focus on craft, proportion, and lived experience.',

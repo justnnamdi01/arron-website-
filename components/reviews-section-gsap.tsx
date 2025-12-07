@@ -287,6 +287,22 @@ export function ReviewsSectionGSAP() {
     ))
   }
 
+  // Generate deterministic particle positions (same on server and client)
+  const particles = Array.from({ length: 30 }, (_, i) => {
+    // Simple seeded random using index
+    const seed1 = (i * 9301 + 49297) % 233280
+    const seed2 = (i * 4253 + 17389) % 233280
+    const seed3 = (i * 7919 + 31337) % 233280
+    const seed4 = (i * 6151 + 25673) % 233280
+    
+    return {
+      left: (seed1 / 233280) * 100,
+      top: (seed2 / 233280) * 100,
+      duration: 10 + (seed3 / 233280) * 20,
+      delay: (seed4 / 233280) * 5,
+    }
+  })
+
   return (
     <section
       ref={sectionRef}
@@ -295,15 +311,15 @@ export function ReviewsSectionGSAP() {
     >
       {/* Animated background particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {Array.from({ length: 30 }, (_, i) => (
+        {particles.map((particle, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-yellow-400/20 rounded-full"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `float ${10 + Math.random() * 20}s infinite ease-in-out`,
-              animationDelay: `${Math.random() * 5}s`,
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              animation: `float ${particle.duration}s infinite ease-in-out`,
+              animationDelay: `${particle.delay}s`,
             }}
           />
         ))}

@@ -60,7 +60,7 @@ export function ProjectGallery() {
       images: [
         "/project pages/DÔTÛ VILLA/8.jpg",
         "/project pages/DÔTÛ VILLA/9.jpg",
-        "/project pages/DÔTÛ VILLA/Image.png",
+        "/project pages/DÔTÛ VILLA/Image.webp",
         "/project pages/DÔTÛ VILLA/IN10.2.jpg",
         "/project pages/DÔTÛ VILLA/IN10.jpg",
         "/project pages/DÔTÛ VILLA/IN11.jpg",

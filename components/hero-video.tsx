@@ -31,6 +31,28 @@ export function HeroVideo() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Extra safeguard: try playing after first user interaction (for strict mobile autoplay policies)
+  useEffect(() => {
+    const enableAutoplay = () => {
+      if (videoRef.current && videoRef.current.paused) {
+        videoRef.current.muted = true
+        videoRef.current
+          .play()
+          .catch(err => console.log("Hero video autoplay after interaction failed:", err))
+      }
+      window.removeEventListener('touchstart', enableAutoplay)
+      window.removeEventListener('click', enableAutoplay)
+    }
+
+    window.addEventListener('touchstart', enableAutoplay, { passive: true })
+    window.addEventListener('click', enableAutoplay)
+
+    return () => {
+      window.removeEventListener('touchstart', enableAutoplay)
+      window.removeEventListener('click', enableAutoplay)
+    }
+  }, [])
+
   // Handle scroll for text movement
   useEffect(() => {
     const handleScroll = () => {

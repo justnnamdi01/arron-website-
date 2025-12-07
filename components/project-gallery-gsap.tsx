@@ -91,7 +91,7 @@ export function ProjectGalleryGSAP() {
       category: "Modern Living",
       description: "Sophisticated residential design with elegant interiors and contemporary features",
       images: [
-        "/project pages/DÔTÛ VILLA/Image.png",
+        "/project pages/DÔTÛ VILLA/Image.webp",
         "/project pages/DÔTÛ VILLA/8.jpg",
         "/project pages/DÔTÛ VILLA/9.jpg",
         "/project pages/DÔTÛ VILLA/IN7.1.jpg",

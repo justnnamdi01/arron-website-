@@ -29,7 +29,7 @@ const portfolioProjects = [
     title: "DÔTÛ Villa",
     category: "Modern Living",
     images: [
-      "/project pages/DÔTÛ VILLA/Image.png",
+      "/project pages/DÔTÛ VILLA/Image.webp",
       "/project pages/DÔTÛ VILLA/8.jpg",
       "/project pages/DÔTÛ VILLA/9.jpg",
       "/project pages/DÔTÛ VILLA/IN8.jpg",

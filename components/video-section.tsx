@@ -76,6 +76,30 @@ export function VideoSection() {
     }
   }, [])
 
+  // Extra safeguard: try playing after first user interaction (for strict mobile autoplay policies)
+  useEffect(() => {
+    const enableAutoplay = () => {
+      videoElementRefs.current.forEach(video => {
+        if (video && video.paused) {
+          video.muted = true
+          video
+            .play()
+            .catch(err => console.log("Video section autoplay after interaction failed:", err))
+        }
+      })
+      window.removeEventListener('touchstart', enableAutoplay)
+      window.removeEventListener('click', enableAutoplay)
+    }
+
+    window.addEventListener('touchstart', enableAutoplay, { passive: true })
+    window.addEventListener('click', enableAutoplay)
+
+    return () => {
+      window.removeEventListener('touchstart', enableAutoplay)
+      window.removeEventListener('click', enableAutoplay)
+    }
+  }, [])
+
   return (
           <section 
         id="video-showcase"

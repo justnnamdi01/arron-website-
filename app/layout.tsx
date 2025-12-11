@@ -100,7 +100,8 @@ export default function RootLayout({
           }
         `}</style>
       </head>
-      <body className="antialiased">
+      {/* Suppress hydration warnings caused by browser extensions (e.g. Grammarly) adding attributes to <body> */}
+      <body className="antialiased" suppressHydrationWarning={true}>
         {children}
         <WhatsAppFloatingButton />
       </body>

@@ -25,7 +25,7 @@ export function Contact() {
                   Mauritius
                 </p>
                 <p>+230 58110646</p>
-                <p>contact@enouhr.com</p>
+                <p>Enou.mu@outlook.com</p>
               </div>
             </div>
 

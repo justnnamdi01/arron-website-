@@ -88,6 +88,17 @@ export function ProjectGallery() {
       ]
     },
     {
+      id: "interior-design",
+      title: "INTERIOR DESIGN",
+      folder: "Interior design",
+      images: [
+        "/project pages/Interior design/1.jpg",
+        "/project pages/Interior design/2.jpg",
+        "/project pages/Interior design/3.jpg",
+        "/project pages/Interior design/4.jpg",
+      ]
+    },
+    {
       id: "jordan-villa",
       title: "JORDAN VILLA",
       folder: "JORDAN VILLA",

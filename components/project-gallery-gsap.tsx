@@ -1,16 +1,9 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-
-// Register GSAP plugins
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 interface Project {
   id: string
@@ -31,19 +24,12 @@ export function ProjectGalleryGSAP() {
   const [projects, setProjects] = useState<Project[]>([])
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [images, setImages] = useState<ImageItem[]>([])
-  const [visibleImages, setVisibleImages] = useState<number[]>([])
   const [loading, setLoading] = useState(true)
   const [imageColumns, setImageColumns] = useState<ImageItem[][]>([[], [], []])
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxImage, setLightboxImage] = useState<ImageItem | null>(null)
   const [lightboxIndex, setLightboxIndex] = useState(0)
-  
-  const imageRefs = useRef<(HTMLDivElement | null)[]>([])
-  const observerRef = useRef<IntersectionObserver | null>(null)
-  const projectHeaderRef = useRef<HTMLDivElement | null>(null)
-  const sidebarItemRefs = useRef<(HTMLButtonElement | null)[]>([])
-  const headerRef = useRef<HTMLDivElement | null>(null)
 
   // Real project data
   const mockProjects: Project[] = [
@@ -64,6 +50,22 @@ export function ProjectGalleryGSAP() {
         "/project pages/KOTO/9.jpg",
         "/project pages/KOTO/12.jpg",
         "/project pages/KOTO/13.jpg",
+        "/project pages/KOTO/27.jpg",
+        "/project pages/KOTO/28.jpg",
+        "/project pages/KOTO/30.jpg",
+        "/project pages/KOTO/31.jpg",
+        "/project pages/KOTO/33.jpg",
+        "/project pages/KOTO/36.jpg",
+        "/project pages/KOTO/37.jpg",
+        "/project pages/KOTO/39.jpg",
+        "/project pages/KOTO/40.jpg",
+        "/project pages/KOTO/43.jpg",
+        "/project pages/KOTO/44.jpg",
+        "/project pages/KOTO/46.jpg",
+        "/project pages/KOTO/52.jpg",
+        "/project pages/KOTO/55.jpg",
+        "/project pages/KOTO/65.jpg",
+        "/project pages/KOTO/Vue d_oiseau.png",
       ]
     },
     {
@@ -103,6 +105,39 @@ export function ProjectGalleryGSAP() {
       ]
     },
     {
+      id: "green-cross-apartments",
+      title: "GREEN CROSS APARTMENTS",
+      folder: "GREEN CROSS APARTMENTS",
+      category: "Residential Complex",
+      description: "Modern apartment complex with sustainable design and contemporary living spaces",
+      images: [
+        "/project pages/GREEN CROSS APARTMENTS/1.jpg",
+        "/project pages/GREEN CROSS APARTMENTS/1_31 - Photo.jpg",
+        "/project pages/GREEN CROSS APARTMENTS/1_32 - Photo.jpg",
+        "/project pages/GREEN CROSS APARTMENTS/1_34 - Photo.jpg",
+        "/project pages/GREEN CROSS APARTMENTS/1_8 - Photo.jpg",
+        "/project pages/GREEN CROSS APARTMENTS/2_3 - Photo.jpg",
+        "/project pages/GREEN CROSS APARTMENTS/2_7 - Photo.jpg",
+        "/project pages/GREEN CROSS APARTMENTS/2_8 - Photo.jpg",
+        "/project pages/GREEN CROSS APARTMENTS/2_9 - Photo.jpg",
+        "/project pages/GREEN CROSS APARTMENTS/5.png",
+        "/project pages/GREEN CROSS APARTMENTS/F_4 - Photo.jpg",
+      ]
+    },
+    {
+      id: "interior-design",
+      title: "INTERIOR DESIGN",
+      folder: "Interior design",
+      category: "Luxury Interiors",
+      description: "Bespoke interior design solutions with a focus on luxury finishes and spatial harmony",
+      images: [
+        "/project pages/Interior design/1.jpg",
+        "/project pages/Interior design/2.jpg",
+        "/project pages/Interior design/3.jpg",
+        "/project pages/Interior design/4.jpg",
+      ]
+    },
+    {
       id: "jordan-villa",
       title: "JORDAN VILLA",
       folder: "JORDAN VILLA",
@@ -118,6 +153,40 @@ export function ProjectGalleryGSAP() {
         "/project pages/JORDAN VILLA/08.jpg",
         "/project pages/JORDAN VILLA/5.1.jpg",
         "/project pages/JORDAN VILLA/8.jpg",
+        "/project pages/JORDAN VILLA/10_32 - Photo.jpg",
+        "/project pages/JORDAN VILLA/10_34 - Photo.jpg",
+        "/project pages/JORDAN VILLA/11_36 - Photo.jpg",
+        "/project pages/JORDAN VILLA/11_38 - Photo.jpg",
+        "/project pages/JORDAN VILLA/8_14 - Photo.jpg",
+        "/project pages/JORDAN VILLA/8_17 - Photo.jpg",
+        "/project pages/JORDAN VILLA/8_20 - Photo.jpg",
+      ]
+    },
+    {
+      id: "mini-casa",
+      title: "MINI CASA",
+      folder: "MINI CASA",
+      category: "Compact Living",
+      description: "Thoughtfully designed compact residence maximizing space and functionality",
+      images: [
+        "/project pages/MINI CASA/1_1 - Photo.jpg",
+        "/project pages/MINI CASA/1_10 - Photo.jpg",
+        "/project pages/MINI CASA/1_2 - Photo.jpg",
+        "/project pages/MINI CASA/1_21 - Photo.jpg",
+        "/project pages/MINI CASA/1_22 - Photo.jpg",
+        "/project pages/MINI CASA/1_24 - Photo.jpg",
+        "/project pages/MINI CASA/1_25 - Photo.jpg",
+        "/project pages/MINI CASA/1_26 - Photo.jpg",
+        "/project pages/MINI CASA/1_27 - Photo.jpg",
+        "/project pages/MINI CASA/1_28 - Photo.jpg",
+        "/project pages/MINI CASA/1_29 - Photo.jpg",
+        "/project pages/MINI CASA/1_3 - Photo.jpg",
+        "/project pages/MINI CASA/1_4 - Photo.jpg",
+        "/project pages/MINI CASA/1_5 - Photo.jpg",
+        "/project pages/MINI CASA/1_6 - Photo.jpg",
+        "/project pages/MINI CASA/1_7 - Photo.jpg",
+        "/project pages/MINI CASA/1_8 - Photo.jpg",
+        "/project pages/MINI CASA/1_9 - Photo.jpg",
       ]
     },
     {
@@ -135,6 +204,78 @@ export function ProjectGalleryGSAP() {
         "/project pages/MINI LUX/12.jpg",
         "/project pages/MINI LUX/13.jpg",
         "/project pages/MINI LUX/20.jpg",
+        "/project pages/MINI LUX/21.jpg",
+        "/project pages/MINI LUX/22.jpg",
+        "/project pages/MINI LUX/View 10.jpg",
+        "/project pages/MINI LUX/View 4.jpg",
+        "/project pages/MINI LUX/View 5.jpg",
+        "/project pages/MINI LUX/View 6.jpg",
+        "/project pages/MINI LUX/View 9.jpg",
+      ]
+    },
+    {
+      id: "rodrigue-project",
+      title: "RODRIGUE PROJECT",
+      folder: "RODRIGUE PROJECT",
+      category: "Residential Design",
+      description: "Elegant residential project with sophisticated design and refined aesthetics",
+      images: [
+        "/project pages/RODRIGUE PROJECT/Set_12 - Photo.jpg",
+        "/project pages/RODRIGUE PROJECT/Set_13 - Photo.jpg",
+        "/project pages/RODRIGUE PROJECT/Set_14 - Photo.jpg",
+        "/project pages/RODRIGUE PROJECT/Set_15 - Photo.jpg",
+        "/project pages/RODRIGUE PROJECT/Set_16 - Photo.jpg",
+        "/project pages/RODRIGUE PROJECT/Set_17 - Photo.jpg",
+      ]
+    },
+    {
+      id: "sica-1",
+      title: "SICA 1",
+      folder: "SICA 1",
+      category: "Residential Project",
+      description: "Contemporary residential design with modern amenities and elegant spaces",
+      images: [
+        "/project pages/SICA 1/0_1 - Photo.jpg",
+        "/project pages/SICA 1/0_2 1- Photo.jpg",
+        "/project pages/SICA 1/0_5 - Photo.jpg",
+        "/project pages/SICA 1/0_6 - Photo.jpg",
+        "/project pages/SICA 1/0_8 - Photo.jpg",
+        "/project pages/SICA 1/0_9 - Photo.jpg",
+        "/project pages/SICA 1/1_11 - Photo.jpg",
+        "/project pages/SICA 1/1_13 - Photo.jpg",
+        "/project pages/SICA 1/1_14 - Photo.jpg",
+        "/project pages/SICA 1/1_15 - Photo.jpg",
+        "/project pages/SICA 1/1_16 - Photo.jpg",
+        "/project pages/SICA 1/1_20 - Photo.jpg",
+      ]
+    },
+    {
+      id: "sica-2",
+      title: "SICA 2",
+      folder: "SICA 2",
+      category: "Residential Project",
+      description: "Modern residential design featuring clean lines and sophisticated interiors",
+      images: [
+        "/project pages/SICA 2/ST_11 - Photo.jpg",
+        "/project pages/SICA 2/ST_14 - Photo.jpg",
+        "/project pages/SICA 2/ST_16 - Photo.jpg",
+        "/project pages/SICA 2/ST_18 - Photo.jpg",
+      ]
+    },
+    {
+      id: "studio",
+      title: "STUDIO",
+      folder: "STUDIO",
+      category: "Studio Space",
+      description: "Creative studio space designed for inspiration and productivity",
+      images: [
+        "/project pages/STUDIO/1.1.jpg",
+        "/project pages/STUDIO/10.jpg",
+        "/project pages/STUDIO/12.jpg",
+        "/project pages/STUDIO/2.jpg",
+        "/project pages/STUDIO/5.jpg",
+        "/project pages/STUDIO/9.jpg",
+        "/project pages/STUDIO/Rough 6.jpg",
       ]
     },
     {
@@ -146,92 +287,22 @@ export function ProjectGalleryGSAP() {
       images: [
         "/project pages/THE GROOVE/1.2.jpg",
         "/project pages/THE GROOVE/1.3.jpg",
+        "/project pages/THE GROOVE/2 (1).jpg",
         "/project pages/THE GROOVE/2.jpg",
         "/project pages/THE GROOVE/3.1.jpg",
         "/project pages/THE GROOVE/5.1.jpg",
         "/project pages/THE GROOVE/N2.jpg",
+        "/project pages/THE GROOVE/P_3 - Photo.jpg",
+        "/project pages/THE GROOVE/P_5 - Photo.jpg",
+        "/project pages/THE GROOVE/P_9 - Photo.jpg",
+        "/project pages/THE GROOVE/SET_14 - Photo.jpg",
+        "/project pages/THE GROOVE/SET_15 - Photo.jpg",
+        "/project pages/THE GROOVE/SET_16 - Photo.jpg",
+        "/project pages/THE GROOVE/SET_17 - Photo.jpg",
+        "/project pages/THE GROOVE/SET_18 - Photo.jpg",
       ]
     },
   ]
-
-  // GSAP Animations
-  useEffect(() => {
-    if (!headerRef.current) return
-
-    const ctx = gsap.context(() => {
-      // Animate header
-      gsap.from(headerRef.current, {
-        y: -50,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-      })
-
-      // Animate sidebar items
-      sidebarItemRefs.current.forEach((item, index) => {
-        if (!item) return
-
-        gsap.from(item, {
-          x: -100,
-          opacity: 0,
-          duration: 0.6,
-          delay: index * 0.1,
-          ease: "power3.out",
-        })
-      })
-
-      // Animate project header
-      if (projectHeaderRef.current) {
-        gsap.from(projectHeaderRef.current, {
-          scrollTrigger: {
-            trigger: projectHeaderRef.current,
-            start: "top 80%",
-          },
-          y: 100,
-          opacity: 0,
-          scale: 0.9,
-          duration: 1,
-          ease: "power3.out",
-        })
-      }
-    }, headerRef)
-
-    return () => ctx.revert()
-  }, [selectedProject])
-
-  // Animate images with GSAP
-  useEffect(() => {
-    imageRefs.current.forEach((imageRef, index) => {
-      if (!imageRef) return
-
-      gsap.from(imageRef, {
-        scrollTrigger: {
-          trigger: imageRef,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-        y: 80,
-        opacity: 0,
-        scale: 0.8,
-        rotation: (index % 2 === 0 ? -5 : 5),
-        duration: 0.8,
-        delay: (index % 3) * 0.1,
-        ease: "power3.out",
-      })
-
-      // Parallax on scroll
-      gsap.to(imageRef, {
-        scrollTrigger: {
-          trigger: imageRef,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        },
-        y: -40,
-        ease: "none",
-      })
-    })
-  }, [images])
 
   const generateImageData = useCallback((imagePaths: string[]): ImageItem[] => {
     return imagePaths.map((path, index) => ({
@@ -267,8 +338,6 @@ export function ProjectGalleryGSAP() {
       const imageData = generateImageData(selectedProject.images)
       setImages(imageData)
       distributeImagesIntoColumns(imageData)
-      setVisibleImages([])
-      imageRefs.current = []
     }
   }, [selectedProject, generateImageData, distributeImagesIntoColumns])
 
@@ -354,7 +423,7 @@ export function ProjectGalleryGSAP() {
 
       <Header />
       
-      <div className="pt-16 md:pt-20 flex h-screen overflow-hidden relative z-10">
+      <div className="pt-16 md:pt-20 flex min-h-screen relative z-10">
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -373,26 +442,23 @@ export function ProjectGalleryGSAP() {
           />
         )}
 
-        {/* Left Sidebar */}
-        <div className={`fixed lg:relative lg:translate-x-0 z-40 transition-all duration-500 ease-out ${
+        {/* Left Sidebar - simple static list, no scroll animations */}
+        <div className={`fixed top-16 md:top-20 bottom-0 lg:relative lg:top-auto lg:bottom-auto lg:translate-x-0 z-40 ${
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:w-80 w-72 bg-stone-900/95 backdrop-blur-xl border-r border-stone-800 h-full overflow-y-auto`}>
+        } lg:w-80 w-72 bg-stone-900/95 backdrop-blur-xl border-r border-stone-800 overflow-y-auto`}>
           
-          <div ref={headerRef} className="p-6 border-b border-stone-800">
+          <div className="p-6 border-b border-stone-800">
             <h1 className="text-2xl font-light text-white tracking-wider">OUR PROJECTS</h1>
             <div className="w-16 h-px bg-amber-500 mt-3"></div>
           </div>
 
           <nav className="p-4 md:p-6">
             <ul className="space-y-2 md:space-y-3">
-              {projects.map((project, index) => (
+              {projects.map((project) => (
                 <li key={project.id}>
                   <button
-                    ref={(el) => {
-                      sidebarItemRefs.current[index] = el
-                    }}
                     onClick={() => handleProjectSelect(project)}
-                    className={`w-full text-left px-3 md:px-4 py-3 md:py-4 rounded-lg md:rounded-xl transition-all duration-300 group relative overflow-hidden ${
+                    className={`w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-lg md:rounded-xl group relative overflow-hidden ${
                       selectedProject?.id === project.id
                         ? 'bg-amber-500/20 text-white border-2 border-amber-500/50 shadow-lg shadow-amber-500/20'
                         : 'text-stone-300 hover:bg-stone-800 hover:text-white border border-stone-700 hover:border-stone-600'
@@ -428,6 +494,11 @@ export function ProjectGalleryGSAP() {
               ))}
             </ul>
           </nav>
+          
+          {/* Sidebar scroll hint for long project lists */}
+          <div className="sticky bottom-0 bg-gradient-to-t from-stone-900/95 to-transparent p-3 text-center text-[11px] text-stone-400">
+            Scroll to see more projects
+          </div>
         </div>
 
         {/* Right Content Area */}
@@ -435,20 +506,21 @@ export function ProjectGalleryGSAP() {
           {selectedProject && (
             <div className="p-6 lg:p-8">
               {/* Project Header with Navigation */}
-              <div ref={projectHeaderRef} className="mb-12">
+              <div className="mb-12">
                 {/* Navigation Buttons */}
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center justify-between mb-4 md:mb-8 gap-3">
                   <button
                     onClick={goToPrevProject}
-                    className="flex items-center space-x-2 px-4 py-2 bg-stone-900/80 hover:bg-stone-800 border border-stone-700 hover:border-amber-500/50 text-stone-300 hover:text-white rounded-lg transition-all duration-300 group"
+                    className="flex items-center justify-center space-x-2 px-3 py-2 md:px-4 md:py-2 bg-stone-900/80 hover:bg-stone-800 border border-stone-700 hover:border-amber-500/50 text-stone-300 hover:text-white rounded-lg transition-all duration-300 group flex-shrink-0"
                   >
                     <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span className="text-sm font-light hidden md:inline">Previous</span>
+                    <span className="text-xs md:text-sm font-light">Previous</span>
                   </button>
 
-                  <div className="flex items-center space-x-2">
+                  {/* Desktop dot navigation */}
+                  <div className="hidden md:flex items-center space-x-2">
                     {projects.map((project, index) => (
                       <button
                         key={project.id}
@@ -465,13 +537,30 @@ export function ProjectGalleryGSAP() {
 
                   <button
                     onClick={goToNextProject}
-                    className="flex items-center space-x-2 px-4 py-2 bg-stone-900/80 hover:bg-stone-800 border border-stone-700 hover:border-amber-500/50 text-stone-300 hover:text-white rounded-lg transition-all duration-300 group"
+                    className="flex items-center justify-center space-x-2 px-3 py-2 md:px-4 md:py-2 bg-stone-900/80 hover:bg-stone-800 border border-stone-700 hover:border-amber-500/50 text-stone-300 hover:text-white rounded-lg transition-all duration-300 group flex-shrink-0"
                   >
-                    <span className="text-sm font-light hidden md:inline">Next</span>
+                    <span className="text-xs md:text-sm font-light">Next</span>
                     <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </button>
+                </div>
+
+                {/* Mobile-friendly project selector */}
+                <div className="mt-3 mb-2 flex md:hidden gap-2 overflow-x-auto pb-1 -mx-2 px-2">
+                  {projects.map((project) => (
+                    <button
+                      key={project.id}
+                      onClick={() => handleProjectSelect(project)}
+                      className={`whitespace-nowrap text-xs px-3 py-1 rounded-full border ${
+                        selectedProject?.id === project.id
+                          ? 'bg-amber-500 text-black border-amber-500'
+                          : 'bg-stone-900 text-stone-200 border-stone-700'
+                      }`}
+                    >
+                      {project.title}
+                    </button>
+                  ))}
                 </div>
 
                 {/* Project Title and Info */}
@@ -485,7 +574,7 @@ export function ProjectGalleryGSAP() {
                 </div>
               </div>
 
-              {/* Image Grid */}
+              {/* Image Grid - simple, no scroll reveal animations */}
               <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-4">
                 {imageColumns.map((column, columnIndex) => (
                   <div key={columnIndex} className="space-y-2 md:space-y-4">
@@ -494,7 +583,6 @@ export function ProjectGalleryGSAP() {
                       return (
                         <div
                           key={globalIndex}
-                          ref={(el) => { imageRefs.current[globalIndex] = el }}
                           className="group relative overflow-hidden rounded-lg md:rounded-xl border border-stone-800 hover:border-amber-500/50 transition-all duration-500 cursor-pointer"
                           style={{ perspective: "1000px" }}
                           onClick={() => openLightbox(image, globalIndex)}

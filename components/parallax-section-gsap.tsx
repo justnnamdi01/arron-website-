@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
@@ -108,9 +109,94 @@ const portfolioProjects = [
     ],
     description: "Bespoke interior design solutions",
   },
+  {
+    id: 9,
+    title: "MINI CASA",
+    category: "Compact Living",
+    images: [
+      "/project pages/MINI CASA/1_1 - Photo.jpg",
+      "/project pages/MINI CASA/1_2 - Photo.jpg",
+      "/project pages/MINI CASA/1_3 - Photo.jpg",
+      "/project pages/MINI CASA/1_4 - Photo.jpg",
+    ],
+    description: "Thoughtfully designed compact residence",
+  },
+  {
+    id: 10,
+    title: "RODRIGUE PROJECT",
+    category: "Residential Design",
+    images: [
+      "/project pages/RODRIGUE PROJECT/Set_12 - Photo.jpg",
+      "/project pages/RODRIGUE PROJECT/Set_13 - Photo.jpg",
+      "/project pages/RODRIGUE PROJECT/Set_14 - Photo.jpg",
+      "/project pages/RODRIGUE PROJECT/Set_15 - Photo.jpg",
+    ],
+    description: "Elegant residential project with sophisticated design",
+  },
+  {
+    id: 11,
+    title: "SICA 1",
+    category: "Residential Project",
+    images: [
+      "/project pages/SICA 1/0_1 - Photo.jpg",
+      "/project pages/SICA 1/0_5 - Photo.jpg",
+      "/project pages/SICA 1/1_11 - Photo.jpg",
+      "/project pages/SICA 1/1_13 - Photo.jpg",
+    ],
+    description: "Contemporary residential design with modern amenities",
+  },
+  {
+    id: 12,
+    title: "SICA 2",
+    category: "Residential Project",
+    images: [
+      "/project pages/SICA 2/ST_11 - Photo.jpg",
+      "/project pages/SICA 2/ST_14 - Photo.jpg",
+      "/project pages/SICA 2/ST_16 - Photo.jpg",
+      "/project pages/SICA 2/ST_18 - Photo.jpg",
+    ],
+    description: "Modern residential design featuring clean lines",
+  },
+  {
+    id: 13,
+    title: "STUDIO",
+    category: "Studio Space",
+    images: [
+      "/project pages/STUDIO/1.1.jpg",
+      "/project pages/STUDIO/10.jpg",
+      "/project pages/STUDIO/12.jpg",
+      "/project pages/STUDIO/2.jpg",
+    ],
+    description: "Creative studio space designed for inspiration",
+  },
+  {
+    id: 14,
+    title: "GALLERY",
+    category: "Project Gallery",
+    images: [
+      "/project pages/GALLERY/1_1.1 - Photo.png",
+      "/project pages/GALLERY/1_3 - Photo.jpg",
+      "/project pages/GALLERY/1_3 - Photo.png",
+      "/project pages/GALLERY/1_6 - Photo.jpg",
+    ],
+    description: "Curated collection showcasing our diverse portfolio",
+  },
+  {
+    id: 15,
+    title: "OUTDOOR",
+    category: "Outdoor Spaces",
+    images: [
+      "/project pages/OUTDOOR/08.jpg",
+      "/project pages/OUTDOOR/2_1 - Photo.jpg",
+      "/project pages/OUTDOOR/2_5 - Photo.jpg",
+      "/project pages/OUTDOOR/A_23 - Photo.jpg",
+    ],
+    description: "Beautifully designed outdoor living spaces",
+  },
 ]
 
 export function ParallaxSectionGSAP() {
+  const router = useRouter()
   const sectionRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
@@ -124,6 +210,25 @@ export function ParallaxSectionGSAP() {
   const [imageFadeStates, setImageFadeStates] = useState<boolean[]>(
     () => portfolioProjects.map(() => true)
   )
+
+  // Map project titles to project IDs used in the projects page
+  const projectTitleToIdMap: Record<string, string> = {
+    "KOTO Villa": "koto",
+    "DÔTÛ Villa": "dotu-villa",
+    "LA CASA": "la-casa",
+    "JORDAN Villa": "jordan-villa",
+    "MINI LUX": "mini-lux",
+    "THE GROOVE": "the-groove",
+    "Green Cross Apartments": "green-cross-apartments",
+    "Interior Design": "interior-design",
+    "MINI CASA": "mini-casa",
+    "RODRIGUE PROJECT": "rodrigue-project",
+    "SICA 1": "sica-1",
+    "SICA 2": "sica-2",
+    "STUDIO": "studio",
+    "GALLERY": "gallery",
+    "OUTDOOR": "outdoor",
+  }
 
   // Detect mobile device
   useEffect(() => {
@@ -267,9 +372,17 @@ export function ParallaxSectionGSAP() {
   }, [])
 
   const handleProjectClick = (projectId: number) => {
-    // Navigate to project detail or open modal
-    console.log(`Opening project ${projectId}`)
-    // You can add navigation logic here
+    const project = portfolioProjects.find(p => p.id === projectId)
+    if (project) {
+      const projectPageId = projectTitleToIdMap[project.title]
+      if (projectPageId) {
+        // Navigate to projects page with the project ID as a query parameter
+        router.push(`/projects?project=${projectPageId}`)
+      } else {
+        // Fallback: just navigate to projects page
+        router.push('/projects')
+      }
+    }
   }
 
   const handleCardTouch = (index: number) => {

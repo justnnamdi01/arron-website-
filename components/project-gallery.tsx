@@ -280,6 +280,46 @@ export function ProjectGallery() {
         "/project pages/THE GROOVE/SET_18 - Photo.jpg",
       ]
     },
+    {
+      id: "gallery",
+      title: "GALLERY",
+      folder: "GALLERY",
+      images: [
+        "/project pages/GALLERY/1_1.1 - Photo.png",
+        "/project pages/GALLERY/1_3 - Photo.jpg",
+        "/project pages/GALLERY/1_3 - Photo.png",
+        "/project pages/GALLERY/1_6 - Photo.jpg",
+        "/project pages/GALLERY/1_6 - Photo.png",
+        "/project pages/GALLERY/1_7.1- Photo.png",
+      ]
+    },
+    {
+      id: "outdoor",
+      title: "OUTDOOR",
+      folder: "OUTDOOR",
+      images: [
+        "/project pages/OUTDOOR/08.jpg",
+        "/project pages/OUTDOOR/2_1 - Photo.jpg",
+        "/project pages/OUTDOOR/2_10 - Photo.jpg",
+        "/project pages/OUTDOOR/2_11 - Photo.jpg",
+        "/project pages/OUTDOOR/2_12 - Photo.jpg",
+        "/project pages/OUTDOOR/2_13 - Photo.jpg",
+        "/project pages/OUTDOOR/2_14 - Photo.jpg",
+        "/project pages/OUTDOOR/2_2 - Photo.jpg",
+        "/project pages/OUTDOOR/2_3 - Photo.jpg",
+        "/project pages/OUTDOOR/2_4 - Photo.jpg",
+        "/project pages/OUTDOOR/2_5 - Photo.jpg",
+        "/project pages/OUTDOOR/2_6 - Photo.jpg",
+        "/project pages/OUTDOOR/2_7 - Photo.jpg",
+        "/project pages/OUTDOOR/2_8 - Photo.jpg",
+        "/project pages/OUTDOOR/2_9 - Photo.jpg",
+        "/project pages/OUTDOOR/A_23 - Photo.jpg",
+        "/project pages/OUTDOOR/A_26 - Photo.jpg",
+        "/project pages/OUTDOOR/A_28 - Photo.jpg",
+        "/project pages/OUTDOOR/AJ_6 - Photo.jpg",
+        "/project pages/OUTDOOR/S_14 - Photo.jpg",
+      ]
+    },
   ]
 
   // Generate random aspect ratios for Pinterest-style layout

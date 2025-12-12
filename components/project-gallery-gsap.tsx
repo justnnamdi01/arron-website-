@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
+import { useSearchParams } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
@@ -21,6 +22,7 @@ interface ImageItem {
 }
 
 export function ProjectGalleryGSAP() {
+  const searchParams = useSearchParams()
   const [projects, setProjects] = useState<Project[]>([])
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [images, setImages] = useState<ImageItem[]>([])
@@ -302,6 +304,50 @@ export function ProjectGalleryGSAP() {
         "/project pages/THE GROOVE/SET_18 - Photo.jpg",
       ]
     },
+    {
+      id: "gallery",
+      title: "GALLERY",
+      folder: "GALLERY",
+      category: "Project Gallery",
+      description: "Curated collection showcasing our diverse architectural portfolio",
+      images: [
+        "/project pages/GALLERY/1_1.1 - Photo.png",
+        "/project pages/GALLERY/1_3 - Photo.jpg",
+        "/project pages/GALLERY/1_3 - Photo.png",
+        "/project pages/GALLERY/1_6 - Photo.jpg",
+        "/project pages/GALLERY/1_6 - Photo.png",
+        "/project pages/GALLERY/1_7.1- Photo.png",
+      ]
+    },
+    {
+      id: "outdoor",
+      title: "OUTDOOR",
+      folder: "OUTDOOR",
+      category: "Outdoor Spaces",
+      description: "Beautifully designed outdoor living spaces and landscapes",
+      images: [
+        "/project pages/OUTDOOR/08.jpg",
+        "/project pages/OUTDOOR/2_1 - Photo.jpg",
+        "/project pages/OUTDOOR/2_10 - Photo.jpg",
+        "/project pages/OUTDOOR/2_11 - Photo.jpg",
+        "/project pages/OUTDOOR/2_12 - Photo.jpg",
+        "/project pages/OUTDOOR/2_13 - Photo.jpg",
+        "/project pages/OUTDOOR/2_14 - Photo.jpg",
+        "/project pages/OUTDOOR/2_2 - Photo.jpg",
+        "/project pages/OUTDOOR/2_3 - Photo.jpg",
+        "/project pages/OUTDOOR/2_4 - Photo.jpg",
+        "/project pages/OUTDOOR/2_5 - Photo.jpg",
+        "/project pages/OUTDOOR/2_6 - Photo.jpg",
+        "/project pages/OUTDOOR/2_7 - Photo.jpg",
+        "/project pages/OUTDOOR/2_8 - Photo.jpg",
+        "/project pages/OUTDOOR/2_9 - Photo.jpg",
+        "/project pages/OUTDOOR/A_23 - Photo.jpg",
+        "/project pages/OUTDOOR/A_26 - Photo.jpg",
+        "/project pages/OUTDOOR/A_28 - Photo.jpg",
+        "/project pages/OUTDOOR/AJ_6 - Photo.jpg",
+        "/project pages/OUTDOOR/S_14 - Photo.jpg",
+      ]
+    },
   ]
 
   const generateImageData = useCallback((imagePaths: string[]): ImageItem[] => {
@@ -327,11 +373,28 @@ export function ProjectGalleryGSAP() {
 
   useEffect(() => {
     setProjects(mockProjects)
-    if (mockProjects.length > 0) {
-      setSelectedProject(mockProjects[0])
+    
+    // Check if there's a project ID in the URL query parameter
+    const projectIdFromUrl = searchParams.get('project')
+    
+    if (projectIdFromUrl) {
+      // Find the project by ID from URL
+      const projectFromUrl = mockProjects.find(p => p.id === projectIdFromUrl)
+      if (projectFromUrl) {
+        setSelectedProject(projectFromUrl)
+      } else {
+        // Fallback to first project if ID not found
+        setSelectedProject(mockProjects[0])
+      }
+    } else {
+      // No URL parameter, use first project as default
+      if (mockProjects.length > 0) {
+        setSelectedProject(mockProjects[0])
+      }
     }
+    
     setLoading(false)
-  }, [])
+  }, [searchParams])
 
   useEffect(() => {
     if (selectedProject) {

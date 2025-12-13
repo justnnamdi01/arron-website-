@@ -20,23 +20,47 @@ export function VideoSection() {
           setIsVisible(true)
           console.log('Video section is now visible!')
           
-          // Force play all videos on mobile
-          videoElementRefs.current.forEach(video => {
+          // Force play all videos with enhanced retry logic
+          videoElementRefs.current.forEach((video, index) => {
             if (video) {
-              video.play().catch(error => {
-                console.log("Video autoplay prevented:", error)
-              })
+              // Ensure video is muted for autoplay
+              video.muted = true
+              video.setAttribute('muted', 'true')
+              video.setAttribute('playsinline', 'true')
+              
+              // Try to play with retry logic
+              const attemptPlay = () => {
+                video.play().catch(error => {
+                  console.log(`Video ${index} autoplay prevented:`, error)
+                  // Retry after a short delay
+                  setTimeout(() => {
+                    video.play().catch(err => console.log(`Video ${index} retry failed:`, err))
+                  }, 500)
+                })
+              }
+              
+              // Immediate attempt
+              attemptPlay()
+              
+              // Also try after a short delay for better success rate
+              setTimeout(attemptPlay, 100)
             }
           })
         } else {
+          // Pause videos when leaving viewport to save resources
+          videoElementRefs.current.forEach(video => {
+            if (video) {
+              video.pause()
+            }
+          })
           // Reset animation when leaving viewport
           setIsVisible(false)
           setVideoVisibility([false, false, false])
         }
       },
       { 
-        threshold: 0.3, // Trigger when 30% of section is visible
-        rootMargin: '-50px 0px' // Add some margin for better timing
+        threshold: 0.2, // Trigger when 20% of section is visible (earlier trigger)
+        rootMargin: '0px 0px -50px 0px' // Add some margin for better timing
       }
     )
 
@@ -79,26 +103,47 @@ export function VideoSection() {
   // Extra safeguard: try playing after first user interaction (for strict mobile autoplay policies)
   useEffect(() => {
     const enableAutoplay = () => {
-      videoElementRefs.current.forEach(video => {
+      videoElementRefs.current.forEach((video, index) => {
         if (video && video.paused) {
           video.muted = true
+          video.setAttribute('muted', 'true')
           video
             .play()
-            .catch(err => console.log("Video section autoplay after interaction failed:", err))
+            .then(() => console.log(`Video ${index} started playing after user interaction`))
+            .catch(err => console.log(`Video ${index} autoplay after interaction failed:`, err))
         }
       })
-      window.removeEventListener('touchstart', enableAutoplay)
-      window.removeEventListener('click', enableAutoplay)
     }
 
-    window.addEventListener('touchstart', enableAutoplay, { passive: true })
-    window.addEventListener('click', enableAutoplay)
+    // Listen for various user interaction events
+    window.addEventListener('touchstart', enableAutoplay, { passive: true, once: true })
+    window.addEventListener('click', enableAutoplay, { once: true })
+    window.addEventListener('scroll', enableAutoplay, { passive: true, once: true })
 
     return () => {
       window.removeEventListener('touchstart', enableAutoplay)
       window.removeEventListener('click', enableAutoplay)
+      window.removeEventListener('scroll', enableAutoplay)
     }
   }, [])
+  
+  // Additional effect to ensure videos play when they become visible
+  useEffect(() => {
+    videoElementRefs.current.forEach((video, index) => {
+      if (video && isVisible) {
+        // Set all required attributes for autoplay
+        video.muted = true
+        video.setAttribute('muted', 'true')
+        video.setAttribute('playsinline', 'true')
+        video.setAttribute('webkit-playsinline', 'true')
+        video.setAttribute('x5-playsinline', 'true')
+        
+        if (video.paused) {
+          video.play().catch(err => console.log(`Video ${index} play attempt failed:`, err))
+        }
+      }
+    })
+  }, [isVisible])
 
   return (
           <section 

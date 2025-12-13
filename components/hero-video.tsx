@@ -16,11 +16,31 @@ export function HeroVideo() {
   const subtitle = "Bespoke architecture that blends vision, craft, and timeless elegance."
 
   useEffect(() => {
-    // Force play on mobile devices
+    // Force play on mobile devices with enhanced attributes
     if (videoRef.current) {
-      videoRef.current.play().catch(error => {
-        console.log("Video autoplay prevented:", error)
-      })
+      const video = videoRef.current
+      video.muted = true
+      video.setAttribute('muted', 'true')
+      video.setAttribute('playsinline', 'true')
+      video.setAttribute('webkit-playsinline', 'true')
+      video.setAttribute('x5-playsinline', 'true')
+      
+      // Multiple play attempts for better success rate
+      const attemptPlay = () => {
+        video.play()
+          .then(() => console.log("Hero video started playing"))
+          .catch(error => {
+            console.log("Hero video autoplay prevented:", error)
+            // Retry after a short delay
+            setTimeout(() => {
+              video.play().catch(err => console.log("Hero video retry failed:", err))
+            }, 500)
+          })
+      }
+      
+      attemptPlay()
+      // Second attempt after a brief delay
+      setTimeout(attemptPlay, 100)
     }
 
     // Start animations 3 seconds after page load
@@ -35,21 +55,25 @@ export function HeroVideo() {
   useEffect(() => {
     const enableAutoplay = () => {
       if (videoRef.current && videoRef.current.paused) {
-        videoRef.current.muted = true
-        videoRef.current
+        const video = videoRef.current
+        video.muted = true
+        video.setAttribute('muted', 'true')
+        video
           .play()
+          .then(() => console.log("Hero video started after user interaction"))
           .catch(err => console.log("Hero video autoplay after interaction failed:", err))
       }
-      window.removeEventListener('touchstart', enableAutoplay)
-      window.removeEventListener('click', enableAutoplay)
     }
 
-    window.addEventListener('touchstart', enableAutoplay, { passive: true })
-    window.addEventListener('click', enableAutoplay)
+    // Listen for various user interaction events
+    window.addEventListener('touchstart', enableAutoplay, { passive: true, once: true })
+    window.addEventListener('click', enableAutoplay, { once: true })
+    window.addEventListener('scroll', enableAutoplay, { passive: true, once: true })
 
     return () => {
       window.removeEventListener('touchstart', enableAutoplay)
       window.removeEventListener('click', enableAutoplay)
+      window.removeEventListener('scroll', enableAutoplay)
     }
   }, [])
 

@@ -13,11 +13,29 @@ export function ArchitectureStudioVideo() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true)
-          // Force play video on mobile
+          // Force play video with enhanced attributes
           if (videoRef.current) {
-            videoRef.current.play().catch(error => {
-              console.log("Video autoplay prevented:", error)
-            })
+            const video = videoRef.current
+            video.muted = true
+            video.setAttribute('muted', 'true')
+            video.setAttribute('playsinline', 'true')
+            video.setAttribute('webkit-playsinline', 'true')
+            video.setAttribute('x5-playsinline', 'true')
+            
+            // Multiple play attempts
+            const attemptPlay = () => {
+              video.play()
+                .then(() => console.log("Studio video started playing"))
+                .catch(error => {
+                  console.log("Studio video autoplay prevented:", error)
+                  setTimeout(() => {
+                    video.play().catch(err => console.log("Studio video retry failed:", err))
+                  }, 500)
+                })
+            }
+            
+            attemptPlay()
+            setTimeout(attemptPlay, 100)
           }
         }
       },
@@ -35,21 +53,25 @@ export function ArchitectureStudioVideo() {
   useEffect(() => {
     const enableAutoplay = () => {
       if (videoRef.current && videoRef.current.paused) {
-        videoRef.current.muted = true
-        videoRef.current
+        const video = videoRef.current
+        video.muted = true
+        video.setAttribute('muted', 'true')
+        video
           .play()
+          .then(() => console.log("Studio video started after user interaction"))
           .catch(err => console.log("Studio video autoplay after interaction failed:", err))
       }
-      window.removeEventListener('touchstart', enableAutoplay)
-      window.removeEventListener('click', enableAutoplay)
     }
 
-    window.addEventListener('touchstart', enableAutoplay, { passive: true })
-    window.addEventListener('click', enableAutoplay)
+    // Listen for various user interaction events
+    window.addEventListener('touchstart', enableAutoplay, { passive: true, once: true })
+    window.addEventListener('click', enableAutoplay, { once: true })
+    window.addEventListener('scroll', enableAutoplay, { passive: true, once: true })
 
     return () => {
       window.removeEventListener('touchstart', enableAutoplay)
       window.removeEventListener('click', enableAutoplay)
+      window.removeEventListener('scroll', enableAutoplay)
     }
   }, [])
 

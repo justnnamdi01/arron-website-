@@ -133,7 +133,7 @@ export function HeroVideo() {
           className="w-full h-full object-cover"
           preload="auto"
         >
-          <source src="/video/first (2).mp4" type="video/mp4" />
+          <source src="/video/herov.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
@@ -295,3 +295,4 @@ export function HeroVideo() {
     </section>
   )
 }
+
